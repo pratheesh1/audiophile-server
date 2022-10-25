@@ -1,0 +1,29 @@
+{
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "allowJs": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "outDir": "./build",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@utils/*": ["./utils/*"]
+    },
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["es2021"],
+    "strict": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true
+  },
+  "compileOnSave": true,
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
