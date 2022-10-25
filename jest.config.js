@@ -12,7 +12,6 @@ module.exports = {
   verbose: true,
   testMatch: ["**/*.test.ts"],
   testPathIgnorePatterns: [NODE_MODULES, BUILD_DIR],
-  collectCoverage: true,
   collectCoverageFrom: ["src/**/*.ts"],
   coveragePathIgnorePatterns: [NODE_MODULES, BUILD_DIR],
   coverageReporters: ["json", "html", "text"],
