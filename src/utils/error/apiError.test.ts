@@ -5,6 +5,10 @@ describe("Test ApiError class", () => {
   const STATUS_CODE = 500;
   const apiError = new ApiError(ERR_MSG, STATUS_CODE);
 
+  it("is an instance of Error", () => {
+    expect(apiError).toBeInstanceOf(Error);
+  });
+
   it("should return the correct message", () => {
     expect(apiError.message).toEqual(ERR_MSG);
   });
