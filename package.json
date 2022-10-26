@@ -12,6 +12,9 @@
     "nodejs"
   ],
   "main": "app.js",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "dev": "nodemon",
     "start": "node -r ./bootstrap.js build/app.js",
@@ -22,7 +25,10 @@
     "test": "jest",
     "gen:schema": "./scripts/generate_schema",
     "start:db": "./scripts/start_db",
-    "stop:db": "./scripts/stop_db"
+    "stop:db": "./scripts/stop_db",
+    "db:migrate": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:reset": "yarn db:migrate && yarn db:seed"
   },
   "dependencies": {
     "@prisma/client": "^4.5.0",
