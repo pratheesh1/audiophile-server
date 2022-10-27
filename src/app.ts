@@ -27,7 +27,7 @@ export async function startServer(): Promise<void> {
       port: config.PORT,
       host: config.HOST,
     });
-    logger.info(`Server started on ${new Date().toISOString()}`);
+    logger.info(`Server started at ${new Date().toISOString()} on port ${config.PORT}`);
     signals.forEach(signal =>
       process.on(signal, () => gracefulShutdown(signal, server, connection))
     );
