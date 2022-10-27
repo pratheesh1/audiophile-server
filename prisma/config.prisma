@@ -14,3 +14,8 @@ generator docs {
     provider = "node node_modules/prisma-docs-generator"
     output   = "../docs"
 }
+
+generator class_validator {
+    provider = "prisma-class-validator-generator"
+    output   = "./generated_models"
+}

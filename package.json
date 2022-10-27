@@ -69,6 +69,7 @@
     "pino-pretty": "^9.1.1",
     "prettier": "^2.7.1",
     "prisma": "^4.5.0",
+    "prisma-class-validator-generator": "^0.2.0",
     "prisma-docs-generator": "^0.5.0",
     "supertest": "^6.3.1",
     "ts-jest": "^29.0.3",

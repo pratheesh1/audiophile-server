@@ -10,7 +10,7 @@ cd prisma
 echo $MESSAGE >schema.prisma
 cat config.prisma >>schema.prisma
 
-DIRECTORY=./models
+DIRECTORY=./schema
 
 for file in $DIRECTORY/*.prisma; do
     echo "Importing $file into schema.prisma"
