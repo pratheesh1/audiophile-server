@@ -32,8 +32,8 @@ export async function connectToDB(): Promise<PrismaClient> {
   logger.info("Connected to database");
 
   isDevEnv &&
-    // @ts-expect-error - This is an bug in type definitions provided by Prisma
     // Error: Argument of type '"query"' is not assignable to parameter of type '"beforeExit"'.ts(2345)
+    // @ts-expect-error - This is an bug in type definitions provided by Prisma
     prisma.$on("query", e => {
       logger.info(`[PRISMA] ${JSON.stringify(e)}`);
     });
