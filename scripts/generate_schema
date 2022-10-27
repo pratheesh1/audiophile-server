@@ -19,3 +19,4 @@ done
 
 cd ..
 npx prisma format
+npx prisma generate
