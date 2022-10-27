@@ -43,6 +43,14 @@ model CartItems {
   updatedAt        DateTime       @default(now()) @updatedAt
 }
 
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  Product     Product[]
+}
+
 model Country {
   id        Int       @id @default(autoincrement())
   name      String    @unique @map("country_name")
@@ -89,14 +97,6 @@ model ProductVariant {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @default(now()) @updatedAt
   CartItems   CartItems[]
-}
-
-model Category {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String
-  products    Product[]
-  createdAt   DateTime  @default(now())
 }
 
 model ProductProperty {

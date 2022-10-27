@@ -28,14 +28,6 @@ model ProductVariant {
     updatedAt   DateTime @default(now()) @updatedAt
 }
 
-model Category {
-    id          Int       @id @default(autoincrement())
-    name        String
-    description String
-    products    Product[]
-    createdAt   DateTime  @default(now())
-}
-
 model ProductProperty {
     id          Int      @id @default(autoincrement())
     name        String

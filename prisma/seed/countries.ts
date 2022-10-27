@@ -1,12 +1,11 @@
+import { Country } from "@prisma/client";
+
 import { logger } from "../../src/utils/logger";
 import { TSeederFunction } from "./index";
 
-interface Country {
-  name: string;
-  code: string;
-}
+type TCountry = Pick<Country, "name" | "code">;
 
-const countries: Country[] = [
+const countries: TCountry[] = [
   { name: "Afghanistan", code: "AF" },
   { name: "Åland Islands", code: "AX" },
   { name: "Albania", code: "AL" },

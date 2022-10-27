@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import { isDevEnv } from "@utils/config";
-import { closeSync, existsSync, mkdirSync, openSync, utimesSync } from "fs";
+import { closeSync, existsSync, mkdirSync, openSync, readdirSync, utimesSync } from "fs";
 
 type ICallbackFn = () => void;
 
@@ -20,4 +20,9 @@ export const createFile = (file: string, callback?: ICallbackFn): void => {
   }
   isDevEnv && console.log(`Initialized file: ${file}`);
   callback && callback();
+};
+
+export const countFiles = (dir: string): number => {
+  const files = readdirSync(dir);
+  return files.length;
 };
