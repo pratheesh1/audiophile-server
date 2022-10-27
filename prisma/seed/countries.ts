@@ -1,7 +1,11 @@
+import { logger } from "../../src/utils/logger";
+import { TSeederFunction } from "./index";
+
 interface Country {
   name: string;
   code: string;
 }
+
 const countries: Country[] = [
   { name: "Afghanistan", code: "AF" },
   { name: "Åland Islands", code: "AX" },
@@ -248,4 +252,17 @@ const countries: Country[] = [
   { name: "Zimbabwe", code: "ZW" },
 ];
 
-export default countries;
+export const seedCountriesData: TSeederFunction = async dbConnection => {
+  const transaction = await dbConnection.$transaction([
+    dbConnection.country.deleteMany(),
+    ...countries.map(country => {
+      return dbConnection.country.create({
+        data: {
+          name: country.name,
+          code: country.code,
+        },
+      });
+    }),
+  ]);
+  logger.info(`[SEED] Inserted ${transaction.length} records.`);
+};

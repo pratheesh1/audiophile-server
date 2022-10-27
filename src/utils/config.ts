@@ -18,3 +18,5 @@ export const config = envSchema<EnvSchema>({
   schema,
   dotenv: true,
 });
+
+export const isDevEnv: boolean = config.NODE_ENV === "development";

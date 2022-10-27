@@ -2,15 +2,16 @@ import { IncomingMessage, Server, ServerResponse } from "node:http";
 
 import { config } from "@utils/config";
 import { createServer } from "@utils/createServer";
-import { connectToDB, disconnectFromDB } from "@utils/db";
+import { connectToDB, disconnectFromDB, TConnection } from "@utils/db";
 import { logger } from "@utils/logger";
 
 const signals = ["SIGINT", "SIGTERM", "SIGQUIT"] as const;
+type TServer = Server<typeof IncomingMessage, typeof ServerResponse>;
 
 async function gracefulShutdown(
   signal: typeof signals[number],
-  server: Server<typeof IncomingMessage, typeof ServerResponse>,
-  connection: Awaited<ReturnType<typeof connectToDB>>
+  server: TServer,
+  connection: TConnection
 ): Promise<void> {
   logger.info(`Received ${signal} signal, shutting server down gracefully`);
   await disconnectFromDB(connection);
