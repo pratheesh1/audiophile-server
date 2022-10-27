@@ -1,9 +1,11 @@
 import { connectToDB, disconnectFromDB } from "../src/utils/db";
+import { logger } from "../src/utils/logger";
 import seederFunctions from "./seed/";
 
 async function seed() {
-  const dbConnection = await connectToDB();
   try {
+    const dbConnection = await connectToDB();
+
     let SEED_COUNT = 1;
     for (const seederFunction of seederFunctions) {
       console.info(`[SEED#${SEED_COUNT}] Running ${seederFunction.name}`);
@@ -12,8 +14,7 @@ async function seed() {
     }
     await disconnectFromDB(dbConnection);
   } catch (error) {
-    console.error(error);
-    await disconnectFromDB(dbConnection);
+    logger.error(error);
     process.exit(1);
   }
 }

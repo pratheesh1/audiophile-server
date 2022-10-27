@@ -15,7 +15,7 @@ export const createFile = (file: string, callback?: ICallbackFn): void => {
   try {
     utimesSync(file, time, time);
   } catch (e) {
-    const message = `This log file was created at ${time}\n${"=".repeat(100)}\n`;
+    const message = `This log file was created on ${time}\n${"=".repeat(100)}\n`;
     const fd = openSync(file, "a");
     writeSync(fd, message);
     closeSync(fd);

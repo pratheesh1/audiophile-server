@@ -10,6 +10,8 @@ const schema = Type.Object({
   HOST: Type.String({ default: "0.0.0.0" }),
   DATABASE_URL: Type.String(),
   SHADOW_DATABASE_URL: Type.String(),
+  MAX_RETRIES: Type.Number({ default: 10 }),
+  RETRY_DELAY: Type.Number({ default: 3000 }),
 });
 
 type EnvSchema = Static<typeof schema>;

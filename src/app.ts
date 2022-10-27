@@ -19,15 +19,32 @@ async function gracefulShutdown(
   process.exit(0);
 }
 
+let retryCount = config.MAX_RETRIES;
 export async function startServer(): Promise<void> {
-  const server = (await createServer()).listen({
-    port: config.PORT,
-    host: config.HOST,
-  });
-  const connection = await connectToDB();
-  logger.info(`Server started on ${new Date().toISOString()}`);
-
-  signals.forEach(signal => process.on(signal, () => gracefulShutdown(signal, server, connection)));
+  try {
+    const connection = await connectToDB();
+    const server = (await createServer()).listen({
+      port: config.PORT,
+      host: config.HOST,
+    });
+    logger.info(`Server started on ${new Date().toISOString()}`);
+    signals.forEach(signal =>
+      process.on(signal, () => gracefulShutdown(signal, server, connection))
+    );
+  } catch (error) {
+    if (--retryCount) {
+      logger.error(
+        `Error starting server. Retrying in ${
+          config.RETRY_DELAY / 1000
+        } second(s). Retries left: ${retryCount}`
+      );
+      setTimeout(startServer, config.RETRY_DELAY);
+    } else {
+      logger.error(`Error starting server. Retries exhausted. Exiting process`);
+      logger.error(error);
+      process.exit(1);
+    }
+  }
 }
 
 startServer();

@@ -38,5 +38,6 @@ process.on("SIGHUP", () => fileStream.reopen());
 
 // ------ export logger ------ //
 const logStream = isDevEnv ? prettyStream() : fileStream;
+
 export const logger = pino(pinoConfig, logStream);
 export const fileLogger = pino(pinoConfig, fileStream);
