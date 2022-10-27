@@ -23,12 +23,13 @@
     "lint": "eslint . --ext .ts && prettier --check .",
     "format": "eslint . --ext .ts --fix && prettier --write .",
     "test": "jest",
-    "gen:schema": "./scripts/generate_schema",
     "db:local:start": "./scripts/start_db",
     "db:local:stop": "./scripts/stop_db",
+    "db:gen:schema": "./scripts/generate_schema",
     "db:migrate": "prisma db push",
     "db:seed": "prisma db seed",
-    "db:reset": "yarn db:migrate && yarn db:seed"
+    "db:reset": "yarn db:migrate && yarn db:seed",
+    "docker:reset": "./scripts/docker_reset"
   },
   "dependencies": {
     "@prisma/client": "^4.5.0",

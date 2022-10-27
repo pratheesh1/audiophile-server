@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
 cd docker
-echo "[DEV SERVER] Starting database..."
+echo "[DEV SERVER] Starting local development database..."
 docker-compose up -d

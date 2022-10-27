@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
 cd docker
-echo "[DEV SERVER] Gracefully stopping database..."
+echo "[DEV SERVER] Gracefully stopping local development database..."
 docker-compose down --remove-orphans

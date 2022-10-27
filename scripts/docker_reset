@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+echo "[DEV SERVER] Resetting database..."
+echo "[DEV SERVER] Removing all containers..."
+docker rm -vf $(docker ps -aq)
+echo "[DEV SERVER] Removing all images..."
+docker rmi -f $(docker images -aq)
