@@ -38,8 +38,7 @@
     "moment": "^2.29.4",
     "nodemon": "^2.0.20",
     "path": "^0.12.7",
-    "pino": "^8.7.0",
-    "ts-node": "^10.9.1"
+    "pino": "^8.7.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.1.0",
@@ -70,6 +69,7 @@
     "prisma": "^4.5.0",
     "supertest": "^6.3.1",
     "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
     "typescript": "*"
   }
