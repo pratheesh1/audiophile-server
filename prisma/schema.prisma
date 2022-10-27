@@ -14,6 +14,11 @@ generator client {
   previewFeatures = ["referentialIntegrity"]
 }
 
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+  output   = "../docs"
+}
+
 model BlackListedToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique

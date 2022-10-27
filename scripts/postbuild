@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+echo "\nRunning postbuild script..."
+
+echo "Creating directory 'app'..."
+rm -rf app && mkdir app
+
+echo "Done. Copying 'node_modules' to 'app'..."
+cp -r node_modules app
+
+echo "Done. Copying 'build' to 'app'..."
+cp -r build app/build
+
+echo "Done. Running 'prisma generate' to update prisma docs..."
+npx prisma format
+npx prisma generate
+
+echo "Done. Copying 'docs' to 'app'..."
+cp -r docs app
+
+echo "Done. Copying 'bootstrap.js' to 'app'..."
+cp bootstrap.js app
+
+echo "Done. Copying 'package.json' to 'app'..."
+cp package.json app
+
+echo "Done. Copying 'tsconfig.json' to 'app'..."
+cp tsconfig.json app
+
+echo "Done. Removing temporary files..."
+rm -rf build
