@@ -1,7 +1,23 @@
 #!/usr/bin/env sh
 
-echo "[DEV SERVER] Resetting database..."
-echo "[DEV SERVER] Removing all containers..."
-docker rm -vf $(docker ps -aq)
-# echo "[DEV SERVER] Removing all images..."
-# docker rmi -f $(docker images -aq)
+echo "Removing all containers and volumes..."
+cd "$(dirname "$0")/.." || exit 1 # cd to project root
+
+cd docker
+
+DOCKER_RUNNING=$(docker ps -q)
+if [ -n "$DOCKER_RUNNING" ]; then
+    docker-compose down --remove-orphans
+fi
+
+CONTAINER_VOLUME_EXISTS=$(docker volume ls -q)
+if [ -n "$CONTAINER_VOLUME_EXISTS" ]; then
+    docker volume rm $(docker volume ls -q)
+fi
+
+CONTAINER_EXISTS=$(docker ps -a -q -f name=docker_mysql)
+if [ -n "$CONTAINER_EXISTS" ]; then
+    docker rm docker_mysql -f
+fi
+
+docker-compose up -d

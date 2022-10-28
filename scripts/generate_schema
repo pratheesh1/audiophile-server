@@ -6,6 +6,8 @@ MESSAGE="// This is a generated file. Do not edit it manually.
 \n// NOTE: DO NOT EDIT file 'schema.prisma' (Changes will be lost).
 \n// Create a new model and run 'gen:schema' to generate 'schema.prisma' file.\n"
 
+cd "$(dirname "$0")/.." || exit 1 # cd to project root
+
 cd prisma
 echo $MESSAGE >schema.prisma
 cat config.prisma >>schema.prisma

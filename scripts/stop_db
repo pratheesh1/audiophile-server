@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+cd "$(dirname "$0")/.." || exit 1 # cd to project root
+
 cd docker
 echo "[DEV SERVER] Gracefully stopping local development database..."
 docker-compose down --remove-orphans

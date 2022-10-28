@@ -1,3 +1,20 @@
 #!/usr/bin/env sh
 
-echo "
+cd "$(dirname "$0")/.." || exit 1 # cd to project root
+
+echo "Cleaning up workspace..."
+
+echo "Removing node_modules..."
+rm -rf node_modules
+
+echo "Removing temp files..."
+rm -rf build dist coverage app docs log base64*
+
+echo "Installing dependencies..."
+yarn install
+
+echo "Rebuilding Prisma client..."
+yarn db:gen:schema
+
+echo "Resetting local database..."
+yarn docker:reset
