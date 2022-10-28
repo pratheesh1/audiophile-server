@@ -48,6 +48,14 @@ module.exports = {
         ignoreStrings: true,
       },
     ],
+    "max-lines": [
+      "error",
+      {
+        max: 100,
+        skipBlankLines: true,
+        skipComments: true,
+      },
+    ],
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "@typescript-eslint/no-explicit-any": "off",
     "simple-import-sort/imports": "error",
