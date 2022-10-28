@@ -12,5 +12,3 @@ if [ -f "$ENV_FILE" ]; then
     xclip -selection clipboard $OUT_FILE
     echo "Generated encoded text copied to clipboard! This is also saved in $OUT_FILE\n"
 fi
-
-echo "Done!"
