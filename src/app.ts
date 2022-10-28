@@ -4,6 +4,7 @@ import { config } from "@utils/config";
 import { createServer } from "@utils/createServer";
 import { connectToDB, disconnectFromDB, TConnection } from "@utils/db";
 import { logger } from "@utils/logger";
+import { upperFirst } from "lodash";
 
 const signals = ["SIGINT", "SIGTERM", "SIGQUIT"] as const;
 type TServer = Server<typeof IncomingMessage, typeof ServerResponse>;
@@ -27,7 +28,11 @@ export async function startServer(): Promise<void> {
       port: config.PORT,
       host: config.HOST,
     });
-    logger.info(`Server started at ${new Date().toISOString()} on port ${config.PORT}`);
+    logger.info(
+      `${upperFirst(config.NODE_ENV)} server started at ${new Date().toISOString()} on port ${
+        config.PORT
+      }`
+    );
     signals.forEach(signal =>
       process.on(signal, () => gracefulShutdown(signal, server, connection))
     );
