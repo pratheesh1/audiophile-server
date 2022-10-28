@@ -17,9 +17,6 @@
 /dist
 /app
 
-# documentation
-/src/public/docs/db
-
 # misc
 .DS_Store
 *.pem
