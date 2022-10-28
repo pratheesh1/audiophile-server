@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+echo "[WARNING] This will reset the local database. This script should not be run in production!"
+
+while true; do
+    read -p "Are you sure you want to continue? [y/N]:" yn
+    case $yn in
+    [Yy]*)
+        cho "Resetting local database..."
+        SLEEP_TIME=5
+
+        yarn db:local:stop
+        sleep $SLEEP_TIME
+
+        yarn docker:reset
+        sleep $SLEEP_TIME
+
+        yarn db:local:start
+        sleep $SLEEP_TIME
+
+        yarn db:reset
+        echo "Local database reset complete."
+        break
+        ;;
+    [Nn]*)
+        echo "Exit without resetting local database."
+        exit
+        ;;
+    *) echo "Please answer yes or no." ;;
+    esac
+done

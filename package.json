@@ -30,6 +30,7 @@
     "db:migrate": "prisma db push",
     "db:seed": "prisma db seed",
     "db:reset": "yarn db:migrate && yarn db:seed",
+    "db:local:reset": "./scripts/reset_db",
     "docker:reset": "./scripts/docker_reset"
   },
   "dependencies": {
