@@ -24,6 +24,7 @@
 db_data
 *log*
 /log/*
+base64.env*
 
 # debug
 npm-debug.log*

@@ -34,6 +34,7 @@ jobs:
         run: |
           # https://stackoverflow.com/a/64452700/17268969
           echo $DEV_ENV_FILE | base64 --decode > .env
+          cat $DEV_ENV_FILE
           cat .env
 
       - name: Test
