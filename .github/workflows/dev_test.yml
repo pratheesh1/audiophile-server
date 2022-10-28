@@ -38,7 +38,7 @@ jobs:
       - name: Set up environment variables
         run: |
           echo $GITHUB_REF
-          [ "$GITHUB_REF" = qa ] && echo $DEV_ENV_FILE | base64 --decode > .env
+          [ "$GITHUB_REF" = dev ] && echo $DEV_ENV_FILE | base64 --decode > .env
 
       - name: Test
         run: yarn test
