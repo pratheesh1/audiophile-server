@@ -12,7 +12,8 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["./*"],
-      "@utils/*": ["./utils/*"]
+      "@utils/*": ["./utils/*"],
+      "@modules/*": ["./modules/*"]
     },
     "module": "commonjs",
     "target": "es5",
