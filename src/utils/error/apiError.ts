@@ -1,9 +1,18 @@
 class ApiError extends Error {
   public httpStatusCode: number;
 
-  constructor(message: string, httpStatusCode: number) {
-    super(message);
+  constructor(err: unknown, httpStatusCode: number, message?: string) {
+    if (ApiError.isError(err)) {
+      super(message ?? err.message);
+      this.stack = err.stack;
+    } else {
+      super("Unknown error");
+    }
     this.httpStatusCode = httpStatusCode;
+  }
+
+  private static isError(err: unknown): err is Error {
+    return err instanceof Error;
   }
 }
 
