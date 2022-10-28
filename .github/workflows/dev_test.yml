@@ -36,9 +36,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Set up environment variables
-        run: |
-          echo "$GITHUB_REF
-          [ "$GITHUB_REF" = dev ] && echo $DEV_ENV_FILE | base64 --decode > .env
+        run: echo $DEV_ENV_FILE | base64 --decode > .env
 
       - name: Test
         run: yarn test

@@ -1,3 +1,6 @@
+# TODO: To update based on recommendations from
+# Q: https://stackoverflow.com/q/60176044/17268969
+# Reply: https://stackoverflow.com/a/64452700/17268969
 name: build and lint
 
 on:
@@ -33,9 +36,8 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Set up environment variables
-        run: |
-          echo ${GIT_REF#refs/}
-      #          [ "$GITHUB_REF" = dev ] && echo $DEV_ENV_FILE | base64 --decode > .env
+        run: echo $DEV_ENV_FILE | base64 --decode > .env
+
       - name: Build
         run: yarn build
 
