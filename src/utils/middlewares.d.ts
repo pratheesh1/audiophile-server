@@ -1,7 +1,9 @@
 import { RequestHandler } from "express";
 
 // To be explicit about having async middlewares
-export type TAsyncExpressMiddleware = (...a: Parameters<RequestHandler>) => Promise<void>;
+export type TAsyncRequestHandler = (
+  ...a: Parameters<RequestHandler>
+) => Promise<ReturnType<RequestHandler>>;
 
 // Extend the Express Request type to include a code to be used in the error handler
 export interface IExpressMiddlewareFn extends Function {

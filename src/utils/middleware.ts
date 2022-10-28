@@ -1,6 +1,6 @@
 import { config } from "@utils/config";
 import { fileLogger, logger } from "@utils/logger";
-import { IExpressMiddlewareFn, TAsyncExpressMiddleware } from "@utils/middlewares.d";
+import { IExpressMiddlewareFn, TAsyncRequestHandler } from "@utils/middlewares.d";
 import { ErrorRequestHandler, NextFunction, Request, RequestHandler, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
@@ -46,7 +46,7 @@ export const syncBindApiErrCode: IExpressMiddlewareFn = (
 };
 
 export const asyncBindApiErrCode: IExpressMiddlewareFn = (
-  middleware: TAsyncExpressMiddleware,
+  middleware: TAsyncRequestHandler,
   statusCodeIfErr: StatusCodes
 ): RequestHandler => {
   return async function (req: Request, res: Response, next: NextFunction) {
