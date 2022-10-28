@@ -1,0 +1,45 @@
+name: build and lint
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_lint:
+    name: build and lint
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    env:
+      DEV_ENV_FILE: ${{ secrets.DEV_ENV_FILE }}
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Set up environment variables
+        run: |
+          [ "$GITHUB_REF" = qa ] && echo $DEV_ENV_FILE | base64 --decode > .env
+
+      - name: Build
+        run: yarn build
+
+      - name: Lint
+        run: yarn format
+
+      - run: git diff --exit-code

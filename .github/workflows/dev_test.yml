@@ -1,0 +1,44 @@
+# TODO: To update based on recommendations from
+# Q: https://stackoverflow.com/q/60176044/17268969
+# Reply: https://stackoverflow.com/a/64452700/17268969
+name: test
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_lint:
+    name: test
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    env:
+      DEV_ENV_FILE: ${{ secrets.DEV_ENV_FILE }}
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Set up environment variables
+        run: |
+          echo $GITHUB_REF
+          [ "$GITHUB_REF" = qa ] && echo $DEV_ENV_FILE | base64 --decode > .env
+
+      - name: Test
+        run: yarn test
