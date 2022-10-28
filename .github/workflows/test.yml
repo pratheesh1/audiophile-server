@@ -17,6 +17,10 @@ jobs:
   build_lint:
     name: test
     runs-on: ubuntu-latest
+    environment:
+      name: dev
+    env:
+      DEV_ENV_FILE: ${{ secrets.DEV_ENV_FILE }}
 
     steps:
       - name: Check out Git repository
@@ -33,7 +37,7 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "${{secrets.DEV_ENV_FILE }}"| base64 --decode > .env
+          echo $DEV_ENV_FILE | base64 --decode > .env
           cat .env
 
       - name: Test
