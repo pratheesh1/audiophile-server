@@ -13,8 +13,22 @@ rm -rf build dist coverage app docs log base64*
 echo "Installing dependencies..."
 yarn install
 
-echo "Rebuilding Prisma client..."
-yarn db:gen:schema
-
-echo "Resetting local database..."
-yarn docker:reset
+while true; do
+    read -p "Do you want to reset the database? [y/N]: " yn
+    case $yn in
+    [Yy]*)
+        echo "Resetting local database..."
+        yarn db:local:reset
+        break
+        ;;
+    [Nn]*)
+        echo "Skipping database reset. Generating prisma client..."
+        yarn db:gen:schema
+        break
+        ;;
+    *)
+        echo "Skipping database reset..."
+        break
+        ;;
+    esac
+done
