@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "[WARN] CI/CD might require updated environment variables!"
+
+ENV_FILE=.env.sample
+OUT_FILE=base64.env.sample.txt
+
+if [ -f "$ENV_FILE" ]; then
+    echo "Genrating base64 encoded file for $ENV_FILE"
+    openssl base64 -A -in $ENV_FILE -out $OUT_FILE
+    cat $OUT_FILE
+    xclip -selection clipboard $OUT_FILE
+    echo "Generated encoded text copied to clipboard! This is also saved in $OUT_FILE"
+fi
+
+echo "Done!"

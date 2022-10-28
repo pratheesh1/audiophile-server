@@ -32,7 +32,8 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          [ "$YOUR_ENVIRONMENT" = dev ] && echo $DEV_ENV_FILE | base64 --decode > .env
+          # https://stackoverflow.com/a/64452700/17268969
+          echo $DEV_ENV_FILE | base64 --decode >> $GITHUB_ENV
 
       - name: Test
         run: yarn test
