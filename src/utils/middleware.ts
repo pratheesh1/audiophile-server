@@ -1,8 +1,7 @@
 import { config } from "@utils/config";
 import { fileLogger, logger } from "@utils/logger";
-import { IExpressMiddlewareFn, TAsyncRequestHandler } from "@utils/middlewares.d";
+import { IErrCode, IExpressMiddlewareFn, TAsyncRequestHandler } from "@utils/middlewares.d";
 import { ErrorRequestHandler, NextFunction, Request, RequestHandler, Response } from "express";
-import { StatusCodes } from "http-status-codes";
 
 import ApiError from "./error/apiError";
 
@@ -10,7 +9,7 @@ export const logRequest: RequestHandler = (req, _res, next) => {
   const message = `[REQUEST] ${req.method} ${req.url} ${req.ip}`;
   if (config.NODE_ENV === "development") {
     logger.info(message);
-    logger.info(req);
+    // logger.info(req);
   } else {
     fileLogger.info(message);
   }
@@ -18,7 +17,8 @@ export const logRequest: RequestHandler = (req, _res, next) => {
   next();
 };
 
-export const logError: ErrorRequestHandler = (err: ApiError, _req, res) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const logError: ErrorRequestHandler = (err: ApiError, _req, res, _next) => {
   const message = `[ERROR] ${err.message} ${err.stack}`;
   if (config.NODE_ENV === "development") {
     logger.error(err);
@@ -27,33 +27,34 @@ export const logError: ErrorRequestHandler = (err: ApiError, _req, res) => {
     fileLogger.error(message);
   }
 
-  return res.sendStatus(err.httpStatusCode).json({
+  return res.status(err.httpStatusCode).json({
+    status: "error",
     message: err.message,
   });
 };
 
 export const syncBindApiErrCode: IExpressMiddlewareFn = (
   middleware: RequestHandler,
-  statusCodeIfErr: StatusCodes
+  statusCodeIfErr: IErrCode
 ): RequestHandler => {
   return function (req: Request, res: Response, next: NextFunction) {
     try {
       return middleware(req, res, next);
     } catch (err) {
-      next(new ApiError(err, statusCodeIfErr));
+      next(new ApiError(err, statusCodeIfErr.code));
     }
   }.bind(statusCodeIfErr);
 };
 
 export const asyncBindApiErrCode: IExpressMiddlewareFn = (
   middleware: TAsyncRequestHandler,
-  statusCodeIfErr: StatusCodes
+  statusCodeIfErr: IErrCode
 ): RequestHandler => {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       return middleware(req, res, next);
     } catch (err) {
-      const apiError = new ApiError(err, statusCodeIfErr);
+      const apiError = new ApiError(err, statusCodeIfErr.code);
       next(apiError);
     }
   }.bind(statusCodeIfErr);

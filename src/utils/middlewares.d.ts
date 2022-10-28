@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import { StatusCodes } from "http-status-codes";
 
 // To be explicit about having async middlewares
 export type TAsyncRequestHandler = (
@@ -12,4 +13,8 @@ export interface IExpressMiddlewareFn extends Function {
     thisArg: T,
     ...args: AX[]
   ): (...args: AX[]) => R;
+}
+
+export interface IErrCode {
+  code: StatusCodes;
 }

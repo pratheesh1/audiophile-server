@@ -15,8 +15,8 @@ echo "Done. Running 'prisma generate' to update prisma docs..."
 npx prisma format
 npx prisma generate
 
-echo "Done. Copying 'docs' to 'app'..."
-cp -r docs app
+echo "Done. Copying 'public' to 'app'..."
+cp -r src/public app/build/public
 
 echo "Done. Copying 'bootstrap.js' to 'app'..."
 cp bootstrap.js app

@@ -12,7 +12,7 @@ generator client {
 
 generator docs {
     provider = "node node_modules/prisma-docs-generator"
-    output   = "../docs"
+    output   = "../src/public/docs/db"
 }
 
 generator class_validator {

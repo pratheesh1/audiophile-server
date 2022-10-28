@@ -1,12 +1,18 @@
 import { IncomingMessage, Server, ServerResponse } from "node:http";
 
 import { config } from "@utils/config";
-import { createServer } from "@utils/createServer";
+import { createServer, TAppConfig } from "@utils/createServer";
 import { connectToDB, disconnectFromDB, TConnection } from "@utils/db";
 import { logger } from "@utils/logger";
 import { upperFirst } from "lodash";
 
 const signals = ["SIGINT", "SIGTERM", "SIGQUIT"] as const;
+const staticFiles: TAppConfig = {
+  staticDirs: ["public", "views"],
+  rootDir: __dirname,
+};
+Object.freeze(staticFiles);
+
 type TServer = Server<typeof IncomingMessage, typeof ServerResponse>;
 
 async function gracefulShutdown(
@@ -21,10 +27,10 @@ async function gracefulShutdown(
 }
 
 let retryCount = config.MAX_RETRIES;
-export async function startServer(): Promise<void> {
+async function startServer(): Promise<void> {
   try {
     const connection = await connectToDB();
-    const server = (await createServer()).listen({
+    const server = (await createServer(staticFiles)).listen({
       port: config.PORT,
       host: config.HOST,
     });
