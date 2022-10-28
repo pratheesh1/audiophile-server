@@ -34,7 +34,7 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "${GIT_REF#refs/*/}"
+          echo ${GIT_REF#refs/}
       #          [ "$GITHUB_REF" = dev ] && echo $DEV_ENV_FILE | base64 --decode > .env
       - name: Build
         run: yarn build
