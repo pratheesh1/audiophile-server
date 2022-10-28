@@ -1,3 +1,6 @@
+# TODO: To update based on recommendations from
+# Q: https://stackoverflow.com/q/60176044/17268969
+# Reply: https://stackoverflow.com/a/64452700/17268969
 name: test
 
 on:
@@ -14,8 +17,6 @@ jobs:
   build_lint:
     name: test
     runs-on: ubuntu-latest
-    env:
-      DEV_ENV_FILE: ${{ secrets.DEV_ENV_FILE }}
 
     steps:
       - name: Check out Git repository
@@ -32,9 +33,7 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          # https://stackoverflow.com/a/64452700/17268969
-          echo $DEV_ENV_FILE | base64 --decode > .env
-          cat $DEV_ENV_FILE
+          echo "${{secrets.DEV_ENV_FILE }}"| base64 --decode > .env
           cat .env
 
       - name: Test
