@@ -1,8 +1,0 @@
-// prisma/schema/category.prisma
-model Category {
-    id          Int       @id @default(autoincrement())
-    name        String    @unique
-    description String?
-    Product     Product[]
-    createdAt   DateTime  @default(now()) @map("created_at")
-}

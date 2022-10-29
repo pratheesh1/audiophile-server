@@ -31,15 +31,6 @@ model BlackListedToken {
   createdAt DateTime @default(now()) @map("created_at")
 }
 
-// prisma/schema/category.prisma
-model Category {
-  id          Int       @id @default(autoincrement())
-  name        String    @unique
-  description String?
-  Product     Product[]
-  createdAt   DateTime  @default(now()) @map("created_at")
-}
-
 // prisma/schema/country.prisma
 model Country {
   id        Int      @id @default(autoincrement())
@@ -56,18 +47,51 @@ model EmailValidatonToken {
 }
 
 // prisma/schema/product.prisma
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  Product     Product[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+}
+
 model Product {
   id              Int               @id @default(autoincrement())
   name            String
   description     String
   price           Float
+  brand           String
+  quantity        Int
   Category        Category          @relation(fields: [categoryId], references: [id])
   categoryId      Int               @map("category_id")
   ProductVariant  ProductVariant[]
   ProductProperty ProductProperty[]
   ProductImage    ProductImage[]
+  sku             String            @unique
   createdAt       DateTime          @default(now()) @map("created_at")
   updatedAt       DateTime          @default(now()) @map("updated_at")
+}
+
+model ProductVariant {
+  id                     Int                      @id @default(autoincrement())
+  name                   String
+  description            String?
+  price                  Float
+  quantity               Int
+  Product                Product                  @relation(fields: [productId], references: [id])
+  productId              Int                      @map("product_id")
+  ProductVariantProperty ProductVariantProperty[]
+  ProductVariantImage    ProductVariantImage[]
+  sku                    String                   @unique
+  createdAt              DateTime                 @default(now()) @map("created_at")
+  updatedAt              DateTime                 @default(now()) @map("updated_at")
+}
+
+model Brand {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  logoUri   String   @map("logo_uri")
+  createdAt DateTime @default(now()) @map("created_at")
 }
 
 enum ProductPropertyType {
@@ -94,19 +118,6 @@ model ProductImage {
   productId Int      @map("product_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
-}
-
-model ProductVariant {
-  id                     Int                      @id @default(autoincrement())
-  name                   String
-  description            String?
-  price                  Float
-  Product                Product                  @relation(fields: [productId], references: [id])
-  productId              Int                      @map("product_id")
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  updatedAt              DateTime                 @default(now()) @map("updated_at")
-  ProductVariantProperty ProductVariantProperty[]
-  ProductVariantImage    ProductVariantImage[]
 }
 
 model ProductVariantProperty {
