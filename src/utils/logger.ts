@@ -1,4 +1,3 @@
-import { isDevEnv } from "@utils/config";
 import { formatDateTime } from "@utils/datetime";
 import { createDir, createFile } from "@utils/fs";
 import pino from "pino";
@@ -36,8 +35,5 @@ createDir("./log", () => createFile(logFile));
 const fileStream = pino.destination(logFile);
 process.on("SIGHUP", () => fileStream.reopen());
 
-// ------ export logger ------ //
-const logStream = isDevEnv ? prettyStream() : fileStream;
-
-export const logger = pino(pinoConfig, logStream);
+export const logger = pino(pinoConfig, prettyStream());
 export const fileLogger = pino(pinoConfig, fileStream);

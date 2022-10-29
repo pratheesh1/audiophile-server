@@ -16,9 +16,9 @@ async function seed() {
 
     let SEED_COUNT = 1;
     for (const seederFunction of seederFunctions) {
-      console.info(`[SEED#${SEED_COUNT}] Running ${seederFunction.name}`);
+      logger.info(`[SEED#${SEED_COUNT}] Running ${seederFunction.name}`);
       await seederFunction(dbConnection);
-      console.info(`[SEED#${SEED_COUNT++}] Completed ${seederFunction.name}`);
+      logger.info(`[SEED#${SEED_COUNT++}] Completed ${seederFunction.name}`);
     }
     await disconnectFromDB(dbConnection);
   } catch (error) {

@@ -18,12 +18,12 @@ while true; do
     case $yn in
     [Yy]*)
         echo "Resetting local database..."
-        yarn db:local:reset
+        yarn dev:db:local:reset
         break
         ;;
     [Nn]*)
         echo "Skipping database reset. Generating prisma client..."
-        yarn db:gen:schema
+        yarn dev:db:gen:schema
         break
         ;;
     *)
