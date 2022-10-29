@@ -13,8 +13,7 @@ export const logRequest: RequestHandler = (req, _res, next) => {
   } else {
     fileLogger.info(message);
   }
-
-  next();
+  return next();
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
