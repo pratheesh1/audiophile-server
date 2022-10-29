@@ -1,4 +1,5 @@
 export { BlackListedToken } from "./BlackListedToken.model";
+export { Brand } from "./Brand.model";
 export { Category } from "./Category.model";
 export { Country } from "./Country.model";
 export { EmailValidatonToken } from "./EmailValidatonToken.model";

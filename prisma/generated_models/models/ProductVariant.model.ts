@@ -18,11 +18,25 @@ export class ProductVariant {
     price!: number;
 
     @IsDefined()
+    @IsInt()
+    quantity!: number;
+
+    @IsDefined()
     Product!: Product;
 
     @IsDefined()
     @IsInt()
     productId!: number;
+
+    @IsDefined()
+    ProductVariantProperty!: ProductVariantProperty[];
+
+    @IsDefined()
+    ProductVariantImage!: ProductVariantImage[];
+
+    @IsDefined()
+    @IsString()
+    sku!: string;
 
     @IsDefined()
     @IsDate()
@@ -31,10 +45,4 @@ export class ProductVariant {
     @IsDefined()
     @IsDate()
     updatedAt!: Date;
-
-    @IsDefined()
-    ProductVariantProperty!: ProductVariantProperty[];
-
-    @IsDefined()
-    ProductVariantImage!: ProductVariantImage[];
 }

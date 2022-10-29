@@ -18,6 +18,14 @@ export class Product {
     price!: number;
 
     @IsDefined()
+    @IsString()
+    brand!: string;
+
+    @IsDefined()
+    @IsInt()
+    quantity!: number;
+
+    @IsDefined()
     Category!: Category;
 
     @IsDefined()
@@ -32,6 +40,10 @@ export class Product {
 
     @IsDefined()
     ProductImage!: ProductImage[];
+
+    @IsDefined()
+    @IsString()
+    sku!: string;
 
     @IsDefined()
     @IsDate()
