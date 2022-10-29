@@ -23,6 +23,7 @@ export const createFile = (file: string, callback?: ICallbackFn): void => {
 };
 
 export const countFiles = (dir: string): number => {
+  if (!existsSync(dir)) return 0;
   const files = readdirSync(dir);
   return files.length;
 };

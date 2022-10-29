@@ -7,11 +7,10 @@ import { logger } from "@utils/logger";
 import { upperFirst } from "lodash";
 
 const signals = ["SIGINT", "SIGTERM", "SIGQUIT"] as const;
-const staticFiles: TAppConfig = {
+const staticFiles: TAppConfig = Object.freeze({
   staticDirs: ["public", "views"],
   rootDir: __dirname,
-};
-Object.freeze(staticFiles);
+});
 
 type TServer = Server<typeof IncomingMessage, typeof ServerResponse>;
 

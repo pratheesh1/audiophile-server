@@ -10,12 +10,11 @@ export async function createServer(config: TAppConfig): Promise<Express> {
   app.use(express.json());
   app.use(compression());
   app.use(express.urlencoded({ extended: true }));
+  app.use(logRequest);
 
   for (const file of config.staticDirs) {
     app.use(express.static(path.join(config.rootDir, file)));
   }
-
-  app.use(logRequest);
 
   app.use(logError);
   return app;

@@ -1,4 +1,4 @@
-import { config } from "@utils/config";
+import { isDevEnv } from "@utils/config";
 import { fileLogger, logger } from "@utils/logger";
 import { IErrCode, IExpressMiddlewareFn, TAsyncRequestHandler } from "@utils/middlewares.d";
 import { ErrorRequestHandler, NextFunction, Request, RequestHandler, Response } from "express";
@@ -7,7 +7,7 @@ import ApiError from "./error/apiError";
 
 export const logRequest: RequestHandler = (req, _res, next) => {
   const message = `[REQUEST] ${req.method} ${req.url} ${req.ip}`;
-  if (config.NODE_ENV === "development") {
+  if (isDevEnv) {
     logger.info(message);
     // logger.info(req);
   } else {
@@ -20,7 +20,7 @@ export const logRequest: RequestHandler = (req, _res, next) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const logError: ErrorRequestHandler = (err: ApiError, _req, res, _next) => {
   const message = `[ERROR] ${err.message} ${err.stack}`;
-  if (config.NODE_ENV === "development") {
+  if (isDevEnv) {
     logger.error(err);
   } else {
     logger.error(message);
@@ -39,9 +39,10 @@ export const syncBindApiErrCode: IExpressMiddlewareFn = (
 ): RequestHandler => {
   return function (req: Request, res: Response, next: NextFunction) {
     try {
-      return middleware(req, res, next);
+      middleware(req, res, next);
+      return;
     } catch (err) {
-      next(new ApiError(err, statusCodeIfErr.code));
+      return next(new ApiError(err, statusCodeIfErr.code));
     }
   }.bind(statusCodeIfErr);
 };
@@ -52,10 +53,11 @@ export const asyncBindApiErrCode: IExpressMiddlewareFn = (
 ): RequestHandler => {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
-      return middleware(req, res, next);
+      await middleware(req, res, next);
+      return;
     } catch (err) {
       const apiError = new ApiError(err, statusCodeIfErr.code);
-      next(apiError);
+      return next(apiError);
     }
   }.bind(statusCodeIfErr);
 };
