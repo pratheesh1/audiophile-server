@@ -27,130 +27,18 @@ generator class_validator {
 model BlackListedToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
-  createdAt DateTime @default(now())
-}
-
-model Cart {
-  id        Int         @id @default(autoincrement())
-  user      User        @relation(fields: [userId], references: [id])
-  userId    Int
-  items     CartItems[]
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now()) @updatedAt
-}
-
-model CartItems {
-  id               Int            @id @default(autoincrement())
-  product          Product        @relation(fields: [productId], references: [id])
-  productId        Int
-  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
-  productVariantId Int
-  cart             Cart           @relation(fields: [cartId], references: [id])
-  cartId           Int
-  quantity         Int
-  originalPrice    Float
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @default(now()) @updatedAt
-}
-
-model Category {
-  id          Int       @id @default(autoincrement())
-  name        String    @unique
-  description String?
-  createdAt   DateTime  @default(now())
-  Product     Product[]
+  createdAt DateTime @default(now()) @map("created_at")
 }
 
 model Country {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique @map("country_name")
-  code      String    @unique @map("country_code")
-  createdAt DateTime  @default(now())
-  Address   Address[]
-}
-
-model EmailValidator {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  token     String
-  createdAt DateTime @default(now())
-}
-
-model Product {
-  id              Int               @id @default(autoincrement())
-  name            String
-  description     String
-  price           Float             @map("base_price")
-  image           String
-  category        Category          @relation(fields: [categoryId], references: [id])
-  categoryId      Int
-  ProductVariant  ProductVariant[]
-  ProductProperty ProductProperty[]
-  sku             String
-  stock           Int
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  CartItems       CartItems[]
-}
-
-model ProductVariant {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String
-  price       Float       @map("variant_price")
-  image       String
-  product     Product     @relation(fields: [productId], references: [id])
-  productId   Int
-  sku         String
-  stock       Int
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now()) @updatedAt
-  CartItems   CartItems[]
-}
-
-model ProductProperty {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  product     Product  @relation(fields: [productId], references: [id])
-  productId   Int
-  createdAt   DateTime @default(now())
-}
-
-model User {
-  id             Int              @id @default(autoincrement())
-  email          String           @unique
-  firstName      String           @map("first_name")
-  lastName       String           @map("last_name")
-  password       String
-  imageUri       String?          @map("image_uri")
-  isVerified     Boolean          @default(false) @map("is_verified")
-  userRole       UserRole         @default(USER)
-  phone          String?
-  Address        Address[]
-  createdAt      DateTime         @default(now()) @map("created_at")
-  updatedAt      DateTime         @updatedAt @map("updated_at")
-  Cart           Cart[]
-  EmailValidator EmailValidator[]
-}
-
-enum UserRole {
-  SUPER_ADMIN
-  ADMIN
-  USER
-}
-
-model Address {
-  id        Int      @id @default(autoincrement())
-  userId    Int      @map("user_id")
-  user      User     @relation(fields: [userId], references: [id])
-  apartment String   @map("apartment")
-  street    String   @map("street")
-  city      String   @map("city")
-  state     String?  @map("state")
-  country   Country  @relation(fields: [countryId], references: [id])
-  zip       String   @map("zip")
+  name      String   @unique @map("country_name")
+  code      String   @unique @map("country_code") @db.VarChar(2)
   createdAt DateTime @default(now()) @map("created_at")
-  countryId Int
+}
+
+model EmailValidatonToken {
+  id        Int      @id @default(autoincrement())
+  token     String
+  createdAt DateTime @default(now()) @map("created_at")
 }

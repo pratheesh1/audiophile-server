@@ -1,0 +1,46 @@
+enum UserRole {
+    SUPER_ADMIN
+    ADMIN
+    USER
+}
+
+model User {
+    id                     Int                  @id @default(autoincrement())
+    email                  String               @unique
+    firstName              String               @map("first_name")
+    lastName               String               @map("last_name")
+    password               String
+    imageUri               String?              @map("image_uri")
+    emailValidationTokenId Int?                 @map("email_validation_token_id")
+    emailValidationToken   EmailValidatonToken? @relation(fields: [emailValidationTokenId], references: [id])
+    isVerified             Boolean              @default(false) @map("is_verified")
+    userRole               UserRole             @default(USER) @map("user_role")
+    phone                  String?
+    addressId              Int?                 @map("address_id")
+    address                Address?             @relation(fields: [addressId], references: [id])
+    createdAt              DateTime             @default(now()) @map("created_at")
+    updatedAt              DateTime             @updatedAt @map("updated_at")
+}
+
+model Address {
+    id        Int      @id @default(autoincrement())
+    userId    Int      @map("user_id")
+    user      User     @relation(fields: [userId], references: [id])
+    apartment String   @map("apartment")
+    street    String   @map("street")
+    city      String   @map("city")
+    state     String?  @map("state")
+    countryId Int      @map("country_id")
+    country   Country  @relation(fields: [countryId], references: [id])
+    zip       String   @map("zip")
+    createdAt DateTime @default(now()) @map("created_at")
+}
+
+model UserAddress {
+    id        Int      @id @default(autoincrement())
+    userId    Int      @map("user_id")
+    user      User     @relation(fields: [userId], references: [id])
+    addressId Int      @map("address_id")
+    address   Address  @relation(fields: [addressId], references: [id])
+    createdAt DateTime @default(now()) @map("created_at")
+}

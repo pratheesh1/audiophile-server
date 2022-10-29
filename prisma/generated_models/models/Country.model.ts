@@ -1,5 +1,5 @@
 import { IsInt, IsDefined, IsString, IsDate } from "class-validator";
-import { Address } from "./";
+import "./";
 
 export class Country {
     @IsDefined()
@@ -17,7 +17,4 @@ export class Country {
     @IsDefined()
     @IsDate()
     createdAt!: Date;
-
-    @IsDefined()
-    Address!: Address[];
 }
