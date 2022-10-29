@@ -70,14 +70,21 @@ model Product {
   updatedAt       DateTime          @default(now()) @map("updated_at")
 }
 
+enum ProductPropertyType {
+  TEXT
+  NUMBER
+  BOOLEAN
+}
+
 model ProductProperty {
-  id          Int      @id @default(autoincrement())
+  id          Int                 @id @default(autoincrement())
   name        String
   description String?
-  Product     Product  @relation(fields: [productId], references: [id])
-  productId   Int      @map("product_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @map("updated_at")
+  Product     Product             @relation(fields: [productId], references: [id])
+  productId   Int                 @map("product_id")
+  type        ProductPropertyType @default(TEXT) @map("type")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @default(now()) @map("updated_at")
 }
 
 model ProductImage {
@@ -103,13 +110,14 @@ model ProductVariant {
 }
 
 model ProductVariantProperty {
-  id          Int            @id @default(autoincrement())
+  id          Int                 @id @default(autoincrement())
   name        String
   description String?
-  Product     ProductVariant @relation(fields: [productId], references: [id])
-  productId   Int            @map("product_id")
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @default(now()) @map("updated_at")
+  Product     ProductVariant      @relation(fields: [productId], references: [id])
+  productId   Int                 @map("product_id")
+  type        ProductPropertyType @default(TEXT) @map("type")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @default(now()) @map("updated_at")
 }
 
 model ProductVariantImage {
