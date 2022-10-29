@@ -1,0 +1,10 @@
+##!/usr/bin/env sh
+
+cd "$(dirname "$0")/.." || exit 1 # cd to project root
+
+# ask for migration name
+echo "Enter migration name:" && read -r migration_name
+
+# create migration
+echo "Creating migration..."
+npx prisma migrate dev --name "$migration_name"
