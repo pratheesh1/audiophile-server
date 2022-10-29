@@ -1,5 +1,5 @@
 import { IsInt, IsDefined, IsString, IsOptional, IsDate } from "class-validator";
-import { Product, ProductVariantProperty, ProductVariantImage } from "./";
+import { Product, ProductVariantProperty, ProductVariantImage, Voucher, CartItem, OrderItem } from "./";
 
 export class ProductVariant {
     @IsDefined()
@@ -22,6 +22,10 @@ export class ProductVariant {
     quantity!: number;
 
     @IsDefined()
+    @IsString()
+    sku!: string;
+
+    @IsDefined()
     Product!: Product;
 
     @IsDefined()
@@ -35,8 +39,7 @@ export class ProductVariant {
     ProductVariantImage!: ProductVariantImage[];
 
     @IsDefined()
-    @IsString()
-    sku!: string;
+    Voucher!: Voucher[];
 
     @IsDefined()
     @IsDate()
@@ -45,4 +48,10 @@ export class ProductVariant {
     @IsDefined()
     @IsDate()
     updatedAt!: Date;
+
+    @IsDefined()
+    CartItem!: CartItem[];
+
+    @IsDefined()
+    OrderItem!: OrderItem[];
 }

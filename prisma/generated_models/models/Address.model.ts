@@ -1,5 +1,5 @@
 import { IsInt, IsDefined, IsString, IsDate } from "class-validator";
-import { Country, User } from "./";
+import { Country, User, Order } from "./";
 
 export class Address {
     @IsDefined()
@@ -8,11 +8,11 @@ export class Address {
 
     @IsDefined()
     @IsString()
-    name!: string;
+    lineOne!: string;
 
     @IsDefined()
     @IsString()
-    address!: string;
+    street!: string;
 
     @IsDefined()
     @IsString()
@@ -39,6 +39,9 @@ export class Address {
     @IsDefined()
     @IsInt()
     userId!: number;
+
+    @IsDefined()
+    Order!: Order[];
 
     @IsDefined()
     @IsDate()

@@ -24,6 +24,8 @@ model BlackListedToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
   createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([token], name: "token")
 }
 
 model Country {
@@ -32,6 +34,8 @@ model Country {
   code      String    @unique @map("country_code") @db.VarChar(2)
   Address   Address[]
   createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([code], name: "country_code")
 }
 
 model Category {
@@ -40,6 +44,8 @@ model Category {
   description String?
   Product     Product[]
   createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([name], name: "name")
 }
 
 model Product {
@@ -47,20 +53,25 @@ model Product {
   name            String
   description     String
   price           Float
-  brand           String
+  Brand           Brand             @relation(fields: [brandId], references: [id])
+  brandId         Int
   quantity        Int
+  sku             String
   Category        Category          @relation(fields: [categoryId], references: [id])
   categoryId      Int               @map("category_id")
+  User            User              @relation(fields: [userId], references: [id])
+  userId          Int               @map("user_id")
   ProductVariant  ProductVariant[]
   ProductProperty ProductProperty[]
   ProductImage    ProductImage[]
-  User            User              @relation(fields: [userId], references: [id])
-  userId          Int               @map("user_id")
-  sku             String
+  CartItem        CartItem[]
+  OrderItem       OrderItem[]
+  Voucher         Voucher[]
   createdAt       DateTime          @default(now()) @map("created_at")
   updatedAt       DateTime          @default(now()) @map("updated_at")
 
   @@unique([sku, userId], name: "productOwner", map: "product_sku_user_id")
+  @@index([name], name: "name")
 }
 
 model ProductVariant {
@@ -69,24 +80,31 @@ model ProductVariant {
   description            String?
   price                  Float
   quantity               Int
+  sku                    String
   Product                Product                  @relation(fields: [productId], references: [id])
   productId              Int                      @map("product_id")
   ProductVariantProperty ProductVariantProperty[]
   ProductVariantImage    ProductVariantImage[]
-  sku                    String
+  Voucher                Voucher[]
   createdAt              DateTime                 @default(now()) @map("created_at")
   updatedAt              DateTime                 @default(now()) @map("updated_at")
+  CartItem               CartItem[]
+  OrderItem              OrderItem[]
 
   @@unique([sku, productId], name: "uniqueProductVariant", map: "product_variant_sku_product_id")
+  @@index([name], name: "name")
 }
 
 model Brand {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
   description String?
-  logoUri     String?  @map("logo_uri")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @map("updated_at")
+  logoUri     String?   @map("logo_uri")
+  Product     Product[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+
+  @@index([name], name: "name")
 }
 
 enum ProductPropertyType {
@@ -163,8 +181,16 @@ model User {
   EmailValidatonToken EmailValidatonToken[]
   Address             Address[]
   Product             Product[]
+  Cart                Cart[]
+  Order               Order[]
+  UserOrder           UserOrder[]
+  Voucher             Voucher[]
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @default(now()) @map("updated_at")
+
+  @@index([email], name: "email")
+  @@index([firstName], name: "first_name")
+  @@index([lastName], name: "last_name")
 }
 
 model EmailValidatonToken {
@@ -179,8 +205,8 @@ model EmailValidatonToken {
 
 model Address {
   id        Int      @id @default(autoincrement())
-  name      String
-  address   String
+  lineOne   String
+  street    String
   city      String
   state     String
   country   Country  @relation(fields: [countryId], references: [id])
@@ -188,6 +214,120 @@ model Address {
   zip       String
   User      User     @relation(fields: [userId], references: [id])
   userId    Int      @map("user_id")
+  Order     Order[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@index([city], name: "city")
+  @@index([countryId], name: "country_id")
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  User      User       @relation(fields: [userId], references: [id])
+  userId    Int        @map("user_id")
+  CartItem  CartItem[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @default(now()) @map("updated_at")
+
+  @@index([userId], name: "user_id")
+}
+
+model CartItem {
+  id               Int             @id @default(autoincrement())
+  quantity         Int
+  originalPrice    Float           @map("original_price")
+  Cart             Cart            @relation(fields: [cartId], references: [id])
+  cartId           Int             @map("cart_id")
+  Product          Product         @relation(fields: [productId], references: [id])
+  productId        Int             @map("product_id")
+  ProductVariant   ProductVariant? @relation(fields: [productVariantId], references: [id])
+  productVariantId Int?            @map("product_variant_id")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @default(now()) @map("updated_at")
+
+  @@unique([cartId, productId, productVariantId], name: "uniqueCartItem", map: "cart_item_cart_id_product_id_product_variant_id")
+  @@index([productId], name: "product_id")
+  @@index([productVariantId], name: "product_variant_id")
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAYMENT_FAILED
+  PAYMENT_SUCCESS
+  PROCESSING
+  PENDING_SHIPMENT
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  status      String
+  User        User        @relation(fields: [userId], references: [id])
+  userId      Int         @map("user_id")
+  Address     Address     @relation(fields: [addressId], references: [id])
+  addressId   Int         @map("address_id")
+  note        String?
+  paymentId   String?     @map("payment_id")
+  orderStatus OrderStatus @default(PENDING_PAYMENT) @map("order_status")
+  UserOrder   UserOrder[]
+  OrderItem   OrderItem[]
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @default(now()) @map("updated_at")
+
+  @@index([userId], name: "user_id")
+}
+
+model UserOrder {
+  id        Int      @id @default(autoincrement())
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  Order     Order    @relation(fields: [orderId], references: [id])
+  orderId   Int      @map("order_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([userId, orderId], name: "uniqueUserOrder", map: "user_order_user_id_order_id")
+}
+
+model OrderItem {
+  id               Int             @id @default(autoincrement())
+  quantity         Int
+  salePrice        Float           @map("sale_price")
+  Order            Order           @relation(fields: [orderId], references: [id])
+  orderId          Int             @map("order_id")
+  Product          Product         @relation(fields: [productId], references: [id])
+  ProductVariant   ProductVariant? @relation(fields: [productVariantId], references: [id])
+  productVariantId Int?            @map("product_variant_id")
+  productId        Int             @map("product_id")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @default(now()) @map("updated_at")
+
+  @@unique([orderId, productId, productVariantId], name: "uniqueOrderItem", map: "order_item_order_id_product_id_product_variant_id")
+  @@index([productId], name: "product_id")
+  @@index([productVariantId], name: "product_variant_id")
+}
+
+model Voucher {
+  id               Int             @id @default(autoincrement())
+  code             String
+  type             String
+  value            Float
+  User             User            @relation(fields: [userId], references: [id])
+  Product          Product         @relation(fields: [productId], references: [id])
+  productId        Int             @map("product_id")
+  ProduvtVariant   ProductVariant? @relation(fields: [productVariantId], references: [id])
+  productVariantId Int?            @map("product_variant_id")
+  userId           Int             @map("user_id")
+  percent          Float?          @default(0)
+  minAmount        Float           @map("min_amount")
+  maxAmount        Float           @map("max_amount")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @default(now()) @map("updated_at")
+
+  @@unique([code, userId, productId, productVariantId], name: "uniqueVoucher", map: "voucher_code_user_id_product_id_product_variant_id")
+  @@index([productId], name: "product_id")
+  @@index([productVariantId], name: "product_variant_id")
 }

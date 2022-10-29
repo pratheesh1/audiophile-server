@@ -1,5 +1,5 @@
 import { IsInt, IsDefined, IsString, IsOptional, IsDate } from "class-validator";
-import "./";
+import { Product } from "./";
 
 export class Brand {
     @IsDefined()
@@ -17,6 +17,9 @@ export class Brand {
     @IsOptional()
     @IsString()
     logoUri?: string;
+
+    @IsDefined()
+    Product!: Product[];
 
     @IsDefined()
     @IsDate()

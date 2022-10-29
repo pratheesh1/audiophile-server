@@ -1,5 +1,5 @@
 import { IsInt, IsDefined, IsString, IsOptional, IsIn, IsBoolean, IsDate } from "class-validator";
-import { EmailValidatonToken, Address, Product } from "./";
+import { EmailValidatonToken, Address, Product, Cart, Order, UserOrder, Voucher } from "./";
 import { getEnumValues } from "../helpers";
 import { UserRole } from "../enums";
 
@@ -52,6 +52,18 @@ export class User {
 
     @IsDefined()
     Product!: Product[];
+
+    @IsDefined()
+    Cart!: Cart[];
+
+    @IsDefined()
+    Order!: Order[];
+
+    @IsDefined()
+    UserOrder!: UserOrder[];
+
+    @IsDefined()
+    Voucher!: Voucher[];
 
     @IsDefined()
     @IsDate()
