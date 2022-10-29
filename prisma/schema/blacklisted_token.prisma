@@ -1,3 +1,4 @@
+// prisma/schema/blacklisted_token.prisma
 model BlackListedToken {
     id        Int      @id @default(autoincrement())
     token     String   @unique

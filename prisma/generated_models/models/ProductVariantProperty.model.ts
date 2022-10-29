@@ -1,7 +1,7 @@
 import { IsInt, IsDefined, IsString, IsOptional, IsDate } from "class-validator";
-import { Product } from "./";
+import { ProductVariant } from "./";
 
-export class Category {
+export class ProductVariantProperty {
     @IsDefined()
     @IsInt()
     id!: number;
@@ -15,9 +15,17 @@ export class Category {
     description?: string;
 
     @IsDefined()
-    Product!: Product[];
+    Product!: ProductVariant;
+
+    @IsDefined()
+    @IsInt()
+    productId!: number;
 
     @IsDefined()
     @IsDate()
     createdAt!: Date;
+
+    @IsDefined()
+    @IsDate()
+    updatedAt!: Date;
 }

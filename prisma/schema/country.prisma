@@ -1,3 +1,4 @@
+// prisma/schema/country.prisma
 model Country {
     id        Int      @id @default(autoincrement())
     name      String   @unique @map("country_name")

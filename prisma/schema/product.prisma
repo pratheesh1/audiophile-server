@@ -1,0 +1,65 @@
+// prisma/schema/product.prisma
+model Product {
+    id              Int               @id @default(autoincrement())
+    name            String
+    description     String
+    price           Float
+    Category        Category          @relation(fields: [categoryId], references: [id])
+    categoryId      Int               @map("category_id")
+    ProductVariant  ProductVariant[]
+    ProductProperty ProductProperty[]
+    ProductImage    ProductImage[]
+    createdAt       DateTime          @default(now()) @map("created_at")
+    updatedAt       DateTime          @default(now()) @map("updated_at")
+}
+
+model ProductProperty {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String?
+    Product     Product  @relation(fields: [productId], references: [id])
+    productId   Int      @map("product_id")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @default(now()) @map("updated_at")
+}
+
+model ProductImage {
+    id        Int      @id @default(autoincrement())
+    url       String
+    Product   Product  @relation(fields: [productId], references: [id])
+    productId Int      @map("product_id")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @default(now()) @map("updated_at")
+}
+
+model ProductVariant {
+    id                     Int                      @id @default(autoincrement())
+    name                   String
+    description            String?
+    price                  Float
+    Product                Product                  @relation(fields: [productId], references: [id])
+    productId              Int                      @map("product_id")
+    createdAt              DateTime                 @default(now()) @map("created_at")
+    updatedAt              DateTime                 @default(now()) @map("updated_at")
+    ProductVariantProperty ProductVariantProperty[]
+    ProductVariantImage    ProductVariantImage[]
+}
+
+model ProductVariantProperty {
+    id          Int            @id @default(autoincrement())
+    name        String
+    description String?
+    Product     ProductVariant @relation(fields: [productId], references: [id])
+    productId   Int            @map("product_id")
+    createdAt   DateTime       @default(now()) @map("created_at")
+    updatedAt   DateTime       @default(now()) @map("updated_at")
+}
+
+model ProductVariantImage {
+    id        Int            @id @default(autoincrement())
+    url       String
+    Product   ProductVariant @relation(fields: [productId], references: [id])
+    productId Int            @map("product_id")
+    createdAt DateTime       @default(now()) @map("created_at")
+    updatedAt DateTime       @default(now()) @map("updated_at")
+}
