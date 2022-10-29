@@ -1,7 +1,0 @@
-// prisma/schema/country.prisma
-model Country {
-    id        Int      @id @default(autoincrement())
-    name      String   @unique @map("country_name")
-    code      String   @unique @map("country_code") @db.VarChar(2)
-    createdAt DateTime @default(now()) @map("created_at")
-}

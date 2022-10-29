@@ -1,5 +1,5 @@
 import { IsInt, IsDefined, IsString, IsDate } from "class-validator";
-import "./";
+import { User } from "./";
 
 export class EmailValidatonToken {
     @IsDefined()
@@ -9,6 +9,13 @@ export class EmailValidatonToken {
     @IsDefined()
     @IsString()
     token!: string;
+
+    @IsDefined()
+    User!: User;
+
+    @IsDefined()
+    @IsInt()
+    userId!: number;
 
     @IsDefined()
     @IsDate()

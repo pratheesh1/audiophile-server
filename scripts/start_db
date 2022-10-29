@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-cd "$(dirname "$0")/.." || exit 1 # cd to project root
-
-cd docker
-echo "[DEV SERVER] Starting local development database..."
-docker-compose up -d

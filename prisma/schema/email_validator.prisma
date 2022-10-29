@@ -1,6 +1,0 @@
-// prisma/schema/email_validator.prisma
-model EmailValidatonToken {
-    id        Int      @id @default(autoincrement())
-    token     String
-    createdAt DateTime @default(now()) @map("created_at")
-}

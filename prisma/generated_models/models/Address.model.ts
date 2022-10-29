@@ -1,7 +1,7 @@
 import { IsInt, IsDefined, IsString, IsDate } from "class-validator";
-import { Category, ProductVariant, ProductProperty, ProductImage, User } from "./";
+import { Country, User } from "./";
 
-export class Product {
+export class Address {
     @IsDefined()
     @IsInt()
     id!: number;
@@ -12,34 +12,26 @@ export class Product {
 
     @IsDefined()
     @IsString()
-    description!: string;
-
-    @IsDefined()
-    price!: number;
+    address!: string;
 
     @IsDefined()
     @IsString()
-    brand!: string;
+    city!: string;
+
+    @IsDefined()
+    @IsString()
+    state!: string;
+
+    @IsDefined()
+    country!: Country;
 
     @IsDefined()
     @IsInt()
-    quantity!: number;
+    countryId!: number;
 
     @IsDefined()
-    Category!: Category;
-
-    @IsDefined()
-    @IsInt()
-    categoryId!: number;
-
-    @IsDefined()
-    ProductVariant!: ProductVariant[];
-
-    @IsDefined()
-    ProductProperty!: ProductProperty[];
-
-    @IsDefined()
-    ProductImage!: ProductImage[];
+    @IsString()
+    zip!: string;
 
     @IsDefined()
     User!: User;
@@ -47,10 +39,6 @@ export class Product {
     @IsDefined()
     @IsInt()
     userId!: number;
-
-    @IsDefined()
-    @IsString()
-    sku!: string;
 
     @IsDefined()
     @IsDate()

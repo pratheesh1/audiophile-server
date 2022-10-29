@@ -1,7 +1,3 @@
-// This is a generated file. Do not edit it manually. 
-// NOTE: DO NOT EDIT file 'schema.prisma' (Changes will be lost). 
-// Create a new model and run 'gen:schema' to generate 'schema.prisma' file.
-
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
@@ -24,29 +20,20 @@ generator class_validator {
   output   = "./generated_models"
 }
 
-// prisma/schema/blacklisted_token.prisma
 model BlackListedToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
   createdAt DateTime @default(now()) @map("created_at")
 }
 
-// prisma/schema/country.prisma
 model Country {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique @map("country_name")
-  code      String   @unique @map("country_code") @db.VarChar(2)
-  createdAt DateTime @default(now()) @map("created_at")
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @map("country_name")
+  code      String    @unique @map("country_code") @db.VarChar(2)
+  Address   Address[]
+  createdAt DateTime  @default(now()) @map("created_at")
 }
 
-// prisma/schema/email_validator.prisma
-model EmailValidatonToken {
-  id        Int      @id @default(autoincrement())
-  token     String
-  createdAt DateTime @default(now()) @map("created_at")
-}
-
-// prisma/schema/product.prisma
 model Category {
   id          Int       @id @default(autoincrement())
   name        String    @unique
@@ -67,9 +54,13 @@ model Product {
   ProductVariant  ProductVariant[]
   ProductProperty ProductProperty[]
   ProductImage    ProductImage[]
-  sku             String            @unique
+  User            User              @relation(fields: [userId], references: [id])
+  userId          Int               @map("user_id")
+  sku             String
   createdAt       DateTime          @default(now()) @map("created_at")
   updatedAt       DateTime          @default(now()) @map("updated_at")
+
+  @@unique([sku, userId], name: "productOwner", map: "product_sku_user_id")
 }
 
 model ProductVariant {
@@ -82,16 +73,20 @@ model ProductVariant {
   productId              Int                      @map("product_id")
   ProductVariantProperty ProductVariantProperty[]
   ProductVariantImage    ProductVariantImage[]
-  sku                    String                   @unique
+  sku                    String
   createdAt              DateTime                 @default(now()) @map("created_at")
   updatedAt              DateTime                 @default(now()) @map("updated_at")
+
+  @@unique([sku, productId], name: "uniqueProductVariant", map: "product_variant_sku_product_id")
 }
 
 model Brand {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  logoUri   String   @map("logo_uri")
-  createdAt DateTime @default(now()) @map("created_at")
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  logoUri     String?  @map("logo_uri")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
 }
 
 enum ProductPropertyType {
@@ -109,6 +104,8 @@ model ProductProperty {
   type        ProductPropertyType @default(TEXT) @map("type")
   createdAt   DateTime            @default(now()) @map("created_at")
   updatedAt   DateTime            @default(now()) @map("updated_at")
+
+  @@unique([name, productId], name: "uniqueProductProperty", map: "product_property_name_product_id")
 }
 
 model ProductImage {
@@ -118,6 +115,8 @@ model ProductImage {
   productId Int      @map("product_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([url, productId], name: "uniqueProductImage", map: "product_image_url_product_id")
 }
 
 model ProductVariantProperty {
@@ -129,6 +128,8 @@ model ProductVariantProperty {
   type        ProductPropertyType @default(TEXT) @map("type")
   createdAt   DateTime            @default(now()) @map("created_at")
   updatedAt   DateTime            @default(now()) @map("updated_at")
+
+  @@unique([name, productId], name: "uniqueProductVariantProperty", map: "product_variant_property_name_product_id")
 }
 
 model ProductVariantImage {
@@ -138,4 +139,55 @@ model ProductVariantImage {
   productId Int            @map("product_id")
   createdAt DateTime       @default(now()) @map("created_at")
   updatedAt DateTime       @default(now()) @map("updated_at")
+
+  @@unique([url, productId], name: "uniqueProductVariantImage", map: "product_variant_image_url_product_id")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+model User {
+  id                  Int                   @id @default(autoincrement())
+  email               String                @unique
+  password            String
+  firstName           String                @map("first_name")
+  middleName          String?               @map("middle_name")
+  lastName            String                @map("last_name")
+  imageUri            String?               @map("image_uri")
+  phone               String?               @map("phone")
+  role                UserRole              @default(USER)
+  isVerified          Boolean               @default(false) @map("is_verified")
+  EmailValidatonToken EmailValidatonToken[]
+  Address             Address[]
+  Product             Product[]
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @default(now()) @map("updated_at")
+}
+
+model EmailValidatonToken {
+  id        Int      @id @default(autoincrement())
+  token     String
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([token, userId], name: "uniqueEmailValidatonToken", map: "email_validaton_token_token_user_id")
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  city      String
+  state     String
+  country   Country  @relation(fields: [countryId], references: [id])
+  countryId Int      @map("country_id")
+  zip       String
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 }

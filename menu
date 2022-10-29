@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd "$(dirname "$0")/.." || exit 1 # cd to project root
+cd "$(dirname "$0")" || exit 1 # cd to project root
 
 #https://dirask.com/posts/Bash-interactive-menu-example-arrow-up-and-down-selection-jm3YGD
 function print_menu() { # selected_item, ...menu_items
