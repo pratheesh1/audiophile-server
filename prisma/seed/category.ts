@@ -17,9 +17,8 @@ const categories: TCategory[] = [
   { name: "Other" },
 ];
 
-export const seedCategoriesData: TSeederFunction = async dbConnection => {
+export const seedCategoriesDataUp: TSeederFunction = async dbConnection => {
   const transaction = await dbConnection.$transaction([
-    dbConnection.category.deleteMany(),
     ...categories.map(category =>
       dbConnection.category.create({
         data: {
@@ -30,4 +29,10 @@ export const seedCategoriesData: TSeederFunction = async dbConnection => {
   ]);
 
   logger.info(`Seeded ${transaction.length} categories`);
+};
+
+export const seedCategoriesDataDown: TSeederFunction = async dbConnection => {
+  const transaction = await dbConnection.$transaction([dbConnection.category.deleteMany()]);
+
+  logger.info(`Deleted ${transaction.length} categories`);
 };

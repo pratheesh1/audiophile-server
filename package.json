@@ -31,7 +31,7 @@
     "dev:db:gen:schema": "./scripts/generate_schema",
     "dev:db:prisma:push": "prisma db push",
     "dev:db:local:seed": "prisma db seed",
-    "dev:db:sync": "yarn dev:db:prisma:push && yarn dev:db:local:seed",
+    "dev:db:sync": "yarn dev:db:gen:schema && yarn dev:db:prisma:push && yarn dev:db:local:seed",
     "docker:reset": "./scripts/docker_reset",
     "workspace:reset": "./scripts/workspace_cleanup"
   },

@@ -251,9 +251,8 @@ const countries: TCountry[] = [
   { name: "Zimbabwe", code: "ZW" },
 ];
 
-export const seedCountriesData: TSeederFunction = async dbConnection => {
+export const seedCountriesDataUp: TSeederFunction = async dbConnection => {
   const transaction = await dbConnection.$transaction([
-    dbConnection.country.deleteMany(),
     ...countries.map(country => {
       return dbConnection.country.create({
         data: {
@@ -263,5 +262,12 @@ export const seedCountriesData: TSeederFunction = async dbConnection => {
       });
     }),
   ]);
+
   logger.info(`[SEED] Inserted ${transaction.length} records.`);
+};
+
+export const seedCountriesDataDown: TSeederFunction = async dbConnection => {
+  const transaction = await dbConnection.$transaction([dbConnection.country.deleteMany()]);
+
+  logger.info(`[SEED] Deleted ${transaction.length} records.`);
 };
