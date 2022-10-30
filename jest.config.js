@@ -24,6 +24,6 @@ module.exports = {
       statements: 80,
     },
   },
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>/src" }),
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>" }),
   modulePaths: ["<rootDir>"],
 };
