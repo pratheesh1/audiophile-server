@@ -17,7 +17,11 @@ generator docs {
 
 generator class_validator {
   provider = "prisma-class-validator-generator"
-  output   = "./models"
+  output   = "./generated/models"
+}
+
+generator zod {
+  provider = "prisma-zod-generator"
 }
 
 model BlackListedToken {

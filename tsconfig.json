@@ -9,12 +9,11 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "outDir": "./build",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@utils/*": ["./utils/*"],
-      "@middlewares/*": ["./utils/middlewares/*"],
-      "@modules/*": ["./modules/*"]
+      "@utils/*": ["src/utils/*"],
+      "@middlewares/*": ["src/utils/middlewares/*"],
+      "@modules/*": ["src/modules/*"]
     },
     "module": "commonjs",
     "target": "es5",
@@ -27,6 +26,6 @@
   },
   "compileOnSave": true,
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/public"],
+  "exclude": ["node_modules", "src/public", "app"],
   "files": ["./index.d.ts"]
 }

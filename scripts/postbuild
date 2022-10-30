@@ -9,23 +9,17 @@ echo "Done. Copying 'node_modules' to 'app'..."
 cp -r node_modules app
 
 echo "Done. Copying 'build' to 'app'..."
-cp -r build app/build
+cp -r build app/src
 
 echo "Done. Running 'prisma generate' to update prisma docs..."
 npx prisma format
 npx prisma generate
 
 echo "Done. Copying 'public' to 'app'..."
-cp -r src/public app/build/public
-
-echo "Done. Copying 'bootstrap.js' to 'app'..."
-cp bootstrap.js app
+cp -r src/public app/src/public
 
 echo "Done. Copying 'package.json' to 'app'..."
 cp package.json app
-
-echo "Done. Copying 'tsconfig.json' to 'app'..."
-cp tsconfig.json app
 
 echo "Done. Removing temporary files..."
 rm -rf build

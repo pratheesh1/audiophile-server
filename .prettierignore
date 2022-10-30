@@ -1,6 +1,7 @@
 node_modules
 build
+app
 coverage
-prisma/models
+prisma/generated
 prisma/migrations
 /src/public/docs/db

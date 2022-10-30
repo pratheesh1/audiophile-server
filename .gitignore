@@ -17,6 +17,9 @@
 /dist
 /app
 
+#genrated
+/prisma/genrated
+
 # documentation
 /src/public/docs
 
