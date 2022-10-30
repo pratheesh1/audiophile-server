@@ -14,7 +14,7 @@ describe("createServer function", () => {
       "urlencodedParser",
       "compression",
       "logRequest",
-      "logError",
+      "handleError",
     ];
     const appMiddlewares = (await app)._router.stack.map(middleware => middleware.name);
     expect(appMiddlewares).toEqual(expect.arrayContaining(usedMiddlewares));

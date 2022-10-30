@@ -1,4 +1,4 @@
-import { logError, logRequest } from "@utils/middleware";
+import { handleError, logRequest } from "@utils/middleware";
 import compression from "compression";
 import express, { Express } from "express";
 import path from "path";
@@ -16,6 +16,6 @@ export async function createServer(config: TAppConfig): Promise<Express> {
     app.use(express.static(path.join(config.rootDir, file)));
   }
 
-  app.use(logError);
+  app.use(handleError);
   return app;
 }

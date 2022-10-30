@@ -17,7 +17,7 @@ export const logRequest: RequestHandler = (req, _res, next) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const logError: ErrorRequestHandler = (err: ApiError, _req, res, _next) => {
+export const handleError: ErrorRequestHandler = (err: ApiError, _req, res, _next) => {
   const message = `[ERROR] ${err.message} ${err.stack}`;
   if (isDevEnv) {
     logger.error(err);
