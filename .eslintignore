@@ -1,6 +1,6 @@
 node_modules
 build
 coverage
-prisma/generated*
+prisma/models
 prisma/migrations
 /src/public/docs/db

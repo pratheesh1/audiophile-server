@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { logger } from "../../src/utils/logger";
-import { Country } from "../generated_models/models/";
+import { Country } from "../models/models/";
 import { TSeederFunction } from "./index";
 
 type TCountry = Pick<Country, "name" | "code">;
