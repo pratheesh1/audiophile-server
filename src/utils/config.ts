@@ -12,6 +12,7 @@ const schema = Type.Object({
   SHADOW_DATABASE_URL: Type.String(),
   MAX_RETRIES: Type.Number({ default: 10 }),
   RETRY_DELAY: Type.Number({ default: 3000 }),
+  SESSION_SECRET: Type.String(),
 });
 
 type EnvSchema = Static<typeof schema>;

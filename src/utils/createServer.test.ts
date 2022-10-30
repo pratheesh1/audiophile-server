@@ -7,7 +7,7 @@ describe("createServer function", () => {
     expect(typeof app).toEqual("function");
   });
 
-  it("should use the express.json middleware", async () => {
+  it("should use the correct middleware", async () => {
     const app = createServer(Object.freeze({ staticDirs: [], rootDir: "" }));
     const usedMiddlewares = [
       "jsonParser",
@@ -15,6 +15,8 @@ describe("createServer function", () => {
       "compression",
       "logRequest",
       "handleError",
+      "session",
+      "cookieParser",
     ];
     const appMiddlewares = (await app)._router.stack.map(middleware => middleware.name);
     expect(appMiddlewares).toEqual(expect.arrayContaining(usedMiddlewares));
