@@ -1,20 +1,8 @@
+import { IErrCode, IExpressMiddlewareFn } from "@middlewares/middlewares";
 import { isDevEnv } from "@utils/config";
+import ApiError from "@utils/error/apiError";
 import { fileLogger, logger } from "@utils/logger";
-import { IErrCode, IExpressMiddlewareFn, TAsyncRequestHandler } from "@utils/middlewares.d";
 import { ErrorRequestHandler, NextFunction, Request, RequestHandler, Response } from "express";
-
-import ApiError from "./error/apiError";
-
-export const logRequest: RequestHandler = (req, _res, next) => {
-  const message = `[REQUEST] ${req.method} ${req.url} ${req.ip}`;
-  if (isDevEnv) {
-    logger.info(message);
-    // logger.info(req);
-  } else {
-    fileLogger.info(message);
-  }
-  return next();
-};
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const handleError: ErrorRequestHandler = (err: ApiError, _req, res, _next) => {
@@ -45,6 +33,11 @@ export const syncBindApiErrCode: IExpressMiddlewareFn = (
     }
   }.bind(statusCodeIfErr);
 };
+
+// To be explicit about having async middlewares
+export type TAsyncRequestHandler = (
+  ...a: Parameters<RequestHandler>
+) => Promise<ReturnType<RequestHandler>>;
 
 export const asyncBindApiErrCode: IExpressMiddlewareFn = (
   middleware: TAsyncRequestHandler,

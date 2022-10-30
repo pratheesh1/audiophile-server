@@ -24,7 +24,6 @@
 .DS_Store
 *.pem
 db_data
-*log*
 /log/*
 base64.env*
 

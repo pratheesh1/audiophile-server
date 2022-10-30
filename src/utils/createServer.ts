@@ -1,4 +1,5 @@
-import { handleError, logRequest } from "@utils/middleware";
+import { handleError } from "@middlewares/errHandler";
+import { logRequest } from "@middlewares/logRequest";
 import compression from "compression";
 import express, { Express } from "express";
 import path from "path";

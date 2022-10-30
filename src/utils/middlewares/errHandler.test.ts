@@ -1,5 +1,5 @@
-import ApiError from "./error/apiError";
-import * as middlewares from "./middleware";
+import ApiError from "../error/apiError";
+import * as middlewares from "./errHandler";
 
 describe("middleware", () => {
   const next = jest.fn();
