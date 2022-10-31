@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { getAllCountries, getCountryByCode } from "./country.repository";
 import { findUniqueCountryRequestSchema } from "./country.schema";
 
+// Get all countries
 const getAllCountriesErrCode: IErrCode = { code: StatusCodes.INTERNAL_SERVER_ERROR };
 async function getAllCountriesController(req: Request, res: Response) {
   const countries = await getAllCountries();
@@ -16,6 +17,7 @@ const getAllCountriesControllerAsync = asyncBindApiErrCode(
   getAllCountriesErrCode
 );
 
+// Get country by code
 const getCountryByCodeErrCode: IErrCode = { code: StatusCodes.INTERNAL_SERVER_ERROR };
 async function getCountryByCodeController(req: Request, res: Response) {
   const { code } = findUniqueCountryRequestSchema.parse(req.query);
@@ -33,6 +35,7 @@ const getCountryByCodeControllerAsync = asyncBindApiErrCode(
   getCountryByCodeErrCode
 );
 
+// Export all controllers
 const controllers = {
   getAllCountries: getAllCountriesControllerAsync,
   getCountryByCode: getCountryByCodeControllerAsync,
