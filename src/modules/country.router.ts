@@ -4,7 +4,7 @@ import controllers from "./country.controller";
 
 const countriesRouter = express.Router();
 
-countriesRouter.get("/", controllers.getCountryByCodeController);
-countriesRouter.get("/all", controllers.getAllCountriesController);
+countriesRouter.get("/", controllers.getCountryByCode);
+countriesRouter.get("/all", controllers.getAllCountries);
 
 export default countriesRouter;

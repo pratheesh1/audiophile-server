@@ -34,7 +34,7 @@ const getCountryByCodeControllerAsync = asyncBindApiErrCode(
 );
 
 const controllers = {
-  getAllCountriesController: getAllCountriesControllerAsync,
-  getCountryByCodeController: getCountryByCodeControllerAsync,
+  getAllCountries: getAllCountriesControllerAsync,
+  getCountryByCode: getCountryByCodeControllerAsync,
 };
 export default controllers;
