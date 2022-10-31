@@ -18,7 +18,7 @@
 /app
 
 #genrated
-/prisma/genrated
+prisma/genrated/*
 
 # documentation
 /src/public/docs
