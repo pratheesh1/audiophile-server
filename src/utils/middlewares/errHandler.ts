@@ -8,15 +8,23 @@ import { ErrorRequestHandler, NextFunction, Request, RequestHandler, Response } 
 export const handleError: ErrorRequestHandler = (err: ApiError, _req, res, _next) => {
   const message = `[ERROR] ${err.message} ${err.stack}`;
   if (isDevEnv) {
-    logger.error(err);
+    logger.error(message);
+    // logger.error(err);
   } else {
     logger.error(message);
     fileLogger.error(message);
   }
 
+  let errMsg: string;
+  try {
+    errMsg = JSON.parse(err.message);
+  } catch (e) {
+    errMsg = err.message;
+  }
+
   return res.status(err.httpStatusCode).json({
     status: "error",
-    message: err.message,
+    message: errMsg,
   });
 };
 
