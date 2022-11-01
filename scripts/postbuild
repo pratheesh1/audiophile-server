@@ -11,10 +11,6 @@ cp -r node_modules app
 echo "Done. Copying 'build' to 'app'..."
 cp -r build app/src
 
-echo "Done. Running 'prisma generate' to update prisma docs..."
-npx prisma format
-npx prisma generate
-
 echo "Done. Copying 'public' to 'app'..."
 cp -r src/public app/src/public
 
