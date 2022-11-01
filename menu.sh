@@ -68,7 +68,7 @@ function run_menu() { # selected_item, ...menu_items
 
 selected_item=0
 menu_items=(
-    'dev:db:gen:schema'
+    'db:gen:schema'
     'dev:db:sync'
     'dev:db:prisma:push'
     'dev:db:migrate'

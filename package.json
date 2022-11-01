@@ -28,10 +28,10 @@
     "dev:db:local:start": "cd docker && docker-compose up -d",
     "dev:db:local:stop": "cd docker && docker-compose down --remove-orphans",
     "dev:db:local:reset": "prisma migrate reset",
-    "dev:db:gen:schema": "prisma format && prisma generate",
+    "db:gen:schema": "prisma format && prisma generate",
     "dev:db:prisma:push": "prisma db push",
     "dev:db:local:seed": "prisma db seed",
-    "dev:db:sync": "yarn dev:db:gen:schema && yarn dev:db:prisma:push",
+    "dev:db:sync": "yarn db:gen:schema && yarn dev:db:prisma:push",
     "docker:reset": "./scripts/docker_reset",
     "workspace:reset": "./scripts/workspace_cleanup"
   },
