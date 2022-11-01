@@ -39,7 +39,7 @@ jobs:
         run: echo $DEV_ENV_FILE | base64 --decode > .env
 
       - name: Build
-        run: yarn dev:db:schema && yarn build
+        run: yarn db:gen:schema && yarn build
 
       - name: Lint
         run: yarn format
