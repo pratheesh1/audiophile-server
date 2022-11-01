@@ -2,7 +2,7 @@ import cookie from "@middlewares/cookie";
 import { handleError } from "@middlewares/errHandler";
 import { logRequest } from "@middlewares/logRequest";
 import sessionMiddleware from "@middlewares/session";
-import countriesRouter from "@modules/country.router";
+import countriesRouter from "@modules/country/country.router";
 import { isDevEnv } from "@utils/config";
 import compression from "compression";
 import express, { Express } from "express";
