@@ -16,11 +16,7 @@ async function createUserController(req: Request, res: Response) {
   const user = await createUserRequestSchema.parseAsync(req.body);
   const createdUser = await userServices.createUser(user);
 
-  req.session.user = {
-    id: createdUser.id,
-    email: createdUser.email,
-    role: createdUser.role,
-  };
+  req.session.user = { id: createdUser.id, email: createdUser.email, role: createdUser.role };
 
   return res.status(StatusCodes.CREATED).json({
     id: createdUser.id,
@@ -38,11 +34,7 @@ async function loginUserController(req: Request, res: Response) {
   const user = await loginUserRequestSchema.parseAsync(req.body);
   const loggedInUser = await userServices.loginUser(user.email, user.password);
 
-  req.session.user = {
-    id: loggedInUser.id,
-    email: loggedInUser.email,
-    role: loggedInUser.role,
-  };
+  req.session.user = { id: loggedInUser.id, email: loggedInUser.email, role: loggedInUser.role };
 
   return res.status(StatusCodes.OK).json({
     id: loggedInUser.id,
@@ -70,9 +62,7 @@ async function refreshTokenController(req: Request, res: Response) {
   if (!refreshToken) throw new Error("Refresh token is required");
 
   const newAccessToken = await userServices.refreshAccessToken(refreshToken);
-  return res.status(StatusCodes.OK).json({
-    accessToken: newAccessToken,
-  });
+  return res.status(StatusCodes.OK).json({ accessToken: newAccessToken });
 }
 const refreshTokenControllerAsync = asyncBindApiErrCode(
   refreshTokenController,

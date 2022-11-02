@@ -36,9 +36,7 @@ export class User {
   constructor(user: UserType) {
     Object.assign(this, user);
     this.middleName = user.middleName || "";
-    if (user.token) {
-      this._refreshToken = user.token;
-    }
+    if (user.token) this._refreshToken = user.token;
   }
 
   get fullName(): string {
@@ -51,11 +49,7 @@ export class User {
 
   async genVerifyEmailToken(): Promise<void> {
     const token = generateToken(
-      {
-        id: this.id,
-        userName: this.fullName,
-        email: this.email,
-      },
+      { id: this.id, userName: this.fullName, email: this.email },
       config.JWT_EMAIL_TOKEN
     );
     await createEmailValidationToken(this.id, token);
@@ -63,14 +57,11 @@ export class User {
 
   async sendVerifyEmail(): Promise<void> {
     // TODO: Implement this
-    console.log("[TODO] Send email to user");
+    console.log("[TODO] Send email to user to verify email");
   }
 
   async genAccessToken(): Promise<void> {
-    const payload: IJwtUserPayload = {
-      name: this.fullName,
-      email: this.email,
-    };
+    const payload: IJwtUserPayload = { name: this.fullName, email: this.email };
     const token = generateToken(payload, config.JWT_ACCESS_TOKEN, {
       expiresIn: config.JWT_ACCESS_TOKEN_EXPIRES_IN,
     });
@@ -79,15 +70,12 @@ export class User {
   }
 
   async genRefreshToken(): Promise<void> {
-    const payload: IJwtUserPayload = {
-      name: this.fullName,
-      email: this.email,
-    };
+    const payload: IJwtUserPayload = { name: this.fullName, email: this.email };
     const token = generateToken(payload, config.JWT_REFRESH_TOKEN, {
       expiresIn: config.JWT_REFRESH_TOKEN_EXPIRES_IN,
     });
 
-    await addUserToken(this.id, token);
+    addUserToken(this.id, token);
     this._refreshToken = token;
   }
 
@@ -111,10 +99,7 @@ export class User {
 
   async logOut(): Promise<void> {
     if (this._refreshToken) {
-      await createBlackListedToken({
-        userId: this.id,
-        token: this._refreshToken,
-      });
+      await createBlackListedToken({ userId: this.id, token: this._refreshToken });
     } else {
       await createBlackListedTokenByEmail(this.email);
     }
