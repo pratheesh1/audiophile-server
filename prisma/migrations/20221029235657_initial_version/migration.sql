@@ -159,7 +159,7 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `EmailValidatonToken` (
+CREATE TABLE `EmailValidationToken` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `token` VARCHAR(191) NOT NULL,
     `user_id` INTEGER NOT NULL,

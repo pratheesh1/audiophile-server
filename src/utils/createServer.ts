@@ -1,9 +1,10 @@
 import cookie from "@middlewares/cookie";
 import { handleError } from "@middlewares/errHandler";
-import { logRequest } from "@middlewares/logRequest";
 import sessionMiddleware from "@middlewares/session";
 import countriesRouter from "@modules/country/country.router";
+import userRouter from "@modules/user/user.router";
 import { isDevEnv } from "@utils/config";
+import { logRequest } from "@utils/middlewares/log";
 import compression from "compression";
 import express, { Express } from "express";
 import path from "path";
@@ -29,7 +30,9 @@ export async function createServer(config: TAppConfig): Promise<Express> {
     app.use(express.static(path.join(config.rootDir, file)));
   }
 
+  // Routes
   app.use("/api/country", countriesRouter);
+  app.use("/api/user", userRouter);
 
   app.use(handleError);
   return app;

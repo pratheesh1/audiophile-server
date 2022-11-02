@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
+import type { Country } from "@prisma/client";
+
 import { logger } from "../../src/utils/logger";
-import { Country } from "../generated/models/models/";
 import { TSeederFunction } from "./index";
 
 type TCountry = Pick<Country, "name" | "code">;

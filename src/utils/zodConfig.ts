@@ -17,6 +17,12 @@ export const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
     };
   }
   if (issue.code === z.ZodIssueCode.custom) {
+    if (issue.path.includes("password")) {
+      const defaultMessage = "Password is invalid!";
+      return {
+        message: issue.message || defaultMessage,
+      };
+    }
     return { message: `less-than-${(issue.params || {}).minimum}` };
   }
   return { message: ctx.defaultError };

@@ -10,8 +10,8 @@ export const logRequest: RequestHandler = (
   const message = `[REQUEST] ${req.method} ${req.url} ${req.ip}`;
   if (isDevEnv) {
     logger.info(message);
-    logger.info(req.session);
     // logger.info(req);
+    // logger.info(req.session);
   } else {
     fileLogger.info(message);
   }

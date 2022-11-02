@@ -2,9 +2,10 @@ import { asyncBindApiErrCode } from "@utils/middlewares/errHandler";
 import { IErrCode } from "@utils/middlewares/middlewares";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { castArray } from "lodash";
 
-import { getAllCountries, getCountryByCode } from "./country.repository";
-import { findUniqueCountryRequestSchema } from "./country.schema";
+import { getAllCountries, getCountriesByCode } from "./country.repository";
+import { findCountriesByCodeRequestSchema } from "./country.schema";
 
 // Get all countries
 const getAllCountriesErrCode: IErrCode = { code: StatusCodes.INTERNAL_SERVER_ERROR };
@@ -18,26 +19,26 @@ const getAllCountriesControllerAsync = asyncBindApiErrCode(
 );
 
 // Get country by code
-const getCountryByCodeErrCode: IErrCode = { code: StatusCodes.INTERNAL_SERVER_ERROR };
-async function getCountryByCodeController(req: Request, res: Response) {
-  const { code } = findUniqueCountryRequestSchema.parse(req.query);
-  const country = await getCountryByCode(code);
+const getCountriesByCodeErrCode: IErrCode = { code: StatusCodes.INTERNAL_SERVER_ERROR };
+async function getCountriesByCodeController(req: Request, res: Response) {
+  const codes = await findCountriesByCodeRequestSchema.parseAsync(castArray(req.query.code));
+  const countries = await getCountriesByCode(codes);
 
-  if (!country) {
+  if (!countries.length) {
     getAllCountriesErrCode.code = StatusCodes.NOT_FOUND;
     throw new Error("Country not found");
   }
 
-  return res.status(StatusCodes.OK).json(country);
+  return res.status(StatusCodes.OK).json(countries);
 }
 const getCountryByCodeControllerAsync = asyncBindApiErrCode(
-  getCountryByCodeController,
-  getCountryByCodeErrCode
+  getCountriesByCodeController,
+  getCountriesByCodeErrCode
 );
 
 // Export all controllers
 const controllers = {
   getAllCountries: getAllCountriesControllerAsync,
-  getCountryByCode: getCountryByCodeControllerAsync,
+  getCountriesByCode: getCountryByCodeControllerAsync,
 };
 export default controllers;

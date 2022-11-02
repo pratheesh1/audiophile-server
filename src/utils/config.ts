@@ -13,6 +13,11 @@ const schema = Type.Object({
   MAX_RETRIES: Type.Number({ default: 10 }),
   RETRY_DELAY: Type.Number({ default: 3000 }),
   SESSION_SECRET: Type.String(),
+  JWT_EMAIL_TOKEN: Type.String(),
+  JWT_ACCESS_TOKEN: Type.String(),
+  JWT_REFRESH_TOKEN: Type.String(),
+  JWT_ACCESS_TOKEN_EXPIRES_IN: Type.String(),
+  JWT_REFRESH_TOKEN_EXPIRES_IN: Type.String(),
 });
 
 type EnvSchema = Static<typeof schema>;

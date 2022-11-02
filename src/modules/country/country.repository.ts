@@ -12,11 +12,13 @@ export const getAllCountries = async (): Promise<TCountry[]> => {
   });
 };
 
-export const getCountryByCode = async (code: string): Promise<TCountry | null> => {
+export const getCountriesByCode = async (codes: string[]): Promise<TCountry[]> => {
   const client = await db();
-  return client.country.findUnique({
+  return client.country.findMany({
     where: {
-      code: code,
+      code: {
+        in: codes,
+      },
     },
     select: {
       name: true,

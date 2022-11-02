@@ -15,21 +15,24 @@ generator docs {
   output   = "../src/public/docs/db"
 }
 
+generator zod {
+  provider = "prisma-zod-generator"
+}
+
 generator class_validator {
   provider = "prisma-class-validator-generator"
   output   = "./generated/models"
 }
 
-generator zod {
-  provider = "prisma-zod-generator"
-}
-
 model BlackListedToken {
   id        Int      @id @default(autoincrement())
-  token     String   @unique
+  token     String
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
   createdAt DateTime @default(now()) @map("created_at")
 
-  @@index([token], name: "token")
+  @@unique([token, userId], name: "uniqueBlacklistedToken", map: "token_user_id")
+  @@index([token, userId])
 }
 
 model Country {
@@ -172,39 +175,40 @@ enum UserRole {
 }
 
 model User {
-  id                  Int                   @id @default(autoincrement())
-  email               String                @unique
-  password            String
-  firstName           String                @map("first_name")
-  middleName          String?               @map("middle_name")
-  lastName            String                @map("last_name")
-  imageUri            String?               @map("image_uri")
-  phone               String?               @map("phone")
-  role                UserRole              @default(USER)
-  isVerified          Boolean               @default(false) @map("is_verified")
-  EmailValidatonToken EmailValidatonToken[]
-  Address             Address[]
-  Product             Product[]
-  Cart                Cart[]
-  Order               Order[]
-  UserOrder           UserOrder[]
-  Voucher             Voucher[]
-  createdAt           DateTime              @default(now()) @map("created_at")
-  updatedAt           DateTime              @default(now()) @map("updated_at")
+  id                   Int                    @id @default(autoincrement())
+  email                String                 @unique
+  password             String
+  firstName            String                 @map("first_name")
+  middleName           String?                @map("middle_name")
+  lastName             String                 @map("last_name")
+  imageUri             String?                @map("image_uri")
+  phone                String?
+  role                 UserRole               @default(USER)
+  token                String?                @db.VarChar(255)
+  isVerified           Boolean                @default(false) @map("is_verified")
+  EmailValidationToken EmailValidationToken[]
+  Address              Address[]
+  Product              Product[]
+  Cart                 Cart[]
+  Order                Order[]
+  Voucher              Voucher[]
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @default(now()) @map("updated_at")
+  BlackListedToken     BlackListedToken[]
 
   @@index([email], name: "email")
   @@index([firstName], name: "first_name")
   @@index([lastName], name: "last_name")
 }
 
-model EmailValidatonToken {
+model EmailValidationToken {
   id        Int      @id @default(autoincrement())
-  token     String
+  token     String   @db.VarChar(255)
   User      User     @relation(fields: [userId], references: [id])
   userId    Int      @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
 
-  @@unique([token, userId], name: "uniqueEmailValidatonToken", map: "email_validaton_token_token_user_id")
+  @@unique([token, userId], name: "uniqueEmailValidationToken", map: "email_validaton_token_token_user_id")
 }
 
 model Address {
@@ -276,24 +280,11 @@ model Order {
   note        String?
   paymentId   String?     @map("payment_id")
   orderStatus OrderStatus @default(PENDING_PAYMENT) @map("order_status")
-  UserOrder   UserOrder[]
   OrderItem   OrderItem[]
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @default(now()) @map("updated_at")
 
   @@index([userId], name: "user_id")
-}
-
-model UserOrder {
-  id        Int      @id @default(autoincrement())
-  User      User     @relation(fields: [userId], references: [id])
-  userId    Int      @map("user_id")
-  Order     Order    @relation(fields: [orderId], references: [id])
-  orderId   Int      @map("order_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
-
-  @@unique([userId, orderId], name: "uniqueUserOrder", map: "user_order_user_id_order_id")
 }
 
 model OrderItem {

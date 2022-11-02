@@ -6,15 +6,6 @@ import { ErrorRequestHandler, NextFunction, Request, RequestHandler, Response } 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const handleError: ErrorRequestHandler = (err: ApiError, _req, res, _next) => {
-  const message = `[ERROR] ${err.message} ${err.stack}`;
-  if (isDevEnv) {
-    logger.error(message);
-    // logger.error(err);
-  } else {
-    logger.error(message);
-    fileLogger.error(message);
-  }
-
   let errMsg: string;
   try {
     errMsg = JSON.parse(err.message);
@@ -22,10 +13,19 @@ export const handleError: ErrorRequestHandler = (err: ApiError, _req, res, _next
     errMsg = err.message;
   }
 
-  return res.status(err.httpStatusCode).json({
+  res.status(err.httpStatusCode).json({
     status: "error",
     message: errMsg,
   });
+
+  const message = `[RESPONSE:ERROR] ${err.httpStatusCode} ${err.message}`;
+  if (isDevEnv) {
+    logger.error(message);
+    // logger.error(err);
+  } else {
+    logger.error(message);
+    fileLogger.error(message);
+  }
 };
 
 export const syncBindApiErrCode: IExpressMiddlewareFn = (

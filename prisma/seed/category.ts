@@ -1,5 +1,6 @@
+import type { Category } from "@prisma/client";
+
 import { logger } from "../../src/utils/logger";
-import { Category } from "../generated/models/models/";
 import { TSeederFunction } from "./index";
 
 type TCategory = Pick<Category, "name">;
